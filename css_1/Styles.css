@@ -1,0 +1,41 @@
+/* 1. Global Styles & Variables */
+:root {
+    /* Brainrot Weekly Color Palette */
+    --color-primary: #FF6B6B;    /* Bright Coral/Red (Neon) */
+    --color-secondary: #4ECDC4;  /* Teal (Bright) */
+    --color-accent: #FFE66D;     /* Yellow (Bright) */
+    --color-background: #F7FFF7; /* Off-White (Neutral/Light Background) */
+    --color-text: #2C3E50;       /* Dark Blue (Text/Dark Contrast) */
+    --color-card-bg: #FFFFFF;    /* Pure White Card Background */
+
+    /* Typography */
+    --font-heading: 'Bangers', cursive;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* Base Styles */
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+h1 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 1.5rem;
+}
+
+button {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border: 1px solid var(--color-primary);
+    background-color: var(--color-card-bg);
+    color: var(--color-text);
+    border-radius: 4px;
+    cursor: pointer;
+}
