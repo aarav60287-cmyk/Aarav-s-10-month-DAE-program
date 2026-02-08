@@ -52,6 +52,7 @@ nav a {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-base);
     max-width: 350px;
+    height: 500px;
     width: 90%;
     text-align: center;
 }
@@ -145,4 +146,19 @@ footer {
     font-size: 0.75rem;
     opacity: 0.8;
     font-weight: 700;
+}
+/* Center everything in the Hero section */
+.hero-container {
+    text-align: center;
+    padding: 80px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Make the subtext look nice under the big title */
+.hero-subtext {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #2C3E50;
 }
