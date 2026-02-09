@@ -1,41 +1,164 @@
 /* 1. Global Styles & Variables */
 :root {
-    /* Brainrot Weekly Color Palette */
-    --color-primary: #FF6B6B;    /* Bright Coral/Red (Neon) */
-    --color-secondary: #4ECDC4;  /* Teal (Bright) */
-    --color-accent: #FFE66D;     /* Yellow (Bright) */
-    --color-background: #F7FFF7; /* Off-White (Neutral/Light Background) */
-    --color-text: #2C3E50;       /* Dark Blue (Text/Dark Contrast) */
-    --color-card-bg: #FFFFFF;    /* Pure White Card Background */
+    --color-primary: #FF6B6B;    /* Bright Coral/Red */
+    --color-secondary: #4ECDC4;  /* Teal/Blue */
+    --color-accent: #FFE66D;     /* Yellow */
+    --color-background: #F7FFF7; /* Light Mint Background */
+    --color-text: #2C3E50;       /* Dark Contrast */
+    --color-card-bg: #FFFFFF;    /* White Card */
 
-    /* Typography */
     --font-heading: 'Bangers', cursive;
     --font-body: 'Inter', sans-serif;
+    
+    --border-radius: 12px;
+    --shadow-base: 8px 8px 0px #4ecdc4; 
+    --transition-speed: 0.1s;
 }
 
-/* Base Styles */
+/* 2. Layout Positioning */
 body {
     background-color: var(--color-background);
     color: var(--color-text);
     font-family: var(--font-body);
     margin: 0;
-    padding: 0;
-    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
+/* Nav Styling to stay out of the way of your design */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 700;
+}
+
+/* 3. The Card (The 'Box') */
+.box {
+    background: var(--color-card-bg);
+    padding: 40px;
+    border: 4px solid var(--color-text);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-base);
+    max-width: 350px;
+    height: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+/* Heading: Red, Italic, Yellow Shadow */
 h1 {
     font-family: var(--font-heading);
     color: var(--color-primary);
-    font-size: 1.5rem;
+    font-size: 3.5rem;
+    margin: 0 0 10px 0;
+    letter-spacing: 2px;
+    font-style: italic;
+    text-shadow: 4px 4px 0px var(--color-accent);
 }
 
-button {
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    padding: 4px 10px;
-    border: 1px solid var(--color-primary);
-    background-color: var(--color-card-bg);
-    color: var(--color-text);
-    border-radius: 4px;
+.section-heading {
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* 4. Social Auth Buttons */
+.auth-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.auth-buttons button {
+    background: white;
+    border: 3px solid var(--color-text);
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    transition: transform var(--transition-speed);
+    box-shadow: 4px 4px 0px var(--color-text);
+}
+
+.auth-buttons button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--color-text);
+}
+
+/* 5. Oval Buttons Styles */
+.signup-button, 
+.login-button {
+    width: 100%;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    padding: 12px;
+    margin: 10px 0;
+    border: 3px solid var(--color-text);
+    border-radius: 100px; /* Oval shape */
+    cursor: pointer;
+    color: white !important;
+    box-shadow: none !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+.signup-button {
+    background: var(--color-primary) !important;
+}
+
+.login-button {
+    background: var(--color-secondary) !important;
+}
+
+/* Static hover state */
+.signup-button:hover, .login-button:hover {
+    color: white !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+footer {
+    margin-top: 20px;
+}
+
+.footer-text {
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 15px 0 5px 0;
+}
+
+.footer-text-small {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    font-weight: 700;
+}
+/* Center everything in the Hero section */
+.hero-container {
+    text-align: center;
+    padding: 80px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Make the subtext look nice under the big title */
+.hero-subtext {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #2C3E50;
 }
