@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Brainrot Weekly</title>
+  <link rel="stylesheet" href="./Ztyles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+ 
+  <header>
+    <h1>Brainrot Weekly</h1>
+    <ul>
+      <li><a href="About.html">About</a></li>
+      <li><a href="Home.html">Home</a></li>
+      <li><a href="Translator.html">Translator</a></li>
+      <li><a href="Trending.html">Trending</a></li>
+    </ul>
+  </header>
+
+  <section class="welcome-box">
+    <h2>Blogs</h2>
+
+    <div class="feature-card" style="max-width: 600px; text-align: left;">
+      <h3>Drop a New Post</h3>
+      <input type="text" id="postTitle" class="post-input" placeholder="Post Title...">
+      <textarea id="postContent" class="post-input" rows="4" placeholder="Start typing..."></textarea>
+      <div style="text-align: center;">
+        <button onclick="addPost()" class="btn">Publish Post</button>
+      </div>
+    </div>
+
+    <div id="blogFeed" style="width: 100%; max-width: 600px; margin-top: 20px;">
+      </div>
+  </section>
+
+  <script>
+    const STORAGE_KEY = "brainrot_blog_posts";
+
+    const defaultPosts = [
+      { 
+        title: "AURA CHECK 2026", 
+        content: "If you're still using 2024 slang, your aura is officially in the negatives.", 
+        date: "April 15, 2026" 
+      }
+    ];
+
+    function loadPosts() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : defaultPosts;
+    }
+
+    function renderPosts() {
+      const feed = document.getElementById("blogFeed");
+      const posts = loadPosts();
+      feed.innerHTML = "";
+
+      posts.slice().reverse().forEach((post, index) => {
+        const realIndex = posts.length - 1 - index; 
+        
+        // This generates the same .feature-card look for every post
+        feed.innerHTML += `
+          <div class="feature-card" style="margin-bottom: 25px; text-align: left;">
+            <h3 style="border-bottom: none;">${post.title}</h3>
+            <small style="font-weight: 900; color: var(--color-secondary);">${post.date}</small>
+            <p style="margin-top:10px; color: var(--color-text);">${post.content}</p>
+            <button class="delete-btn" onclick="deletePost(${realIndex})">Delete</button>
+          </div>
+        `;
+      });
+    }
+
+    function addPost() {
+      const tInput = document.getElementById("postTitle");
+      const cInput = document.getElementById("postContent");
+      
+      if(!tInput.value || !cInput.value) return alert("Fill it out, blud.");
+
+      const posts = loadPosts();
+      posts.push({
+        title: tInput.value.toUpperCase(),
+        content: cInput.value,
+        date: new Date().toLocaleDateString()
+      });
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+      tInput.value = "";
+      cInput.value = "";
+      renderPosts();
+    }
+
+    function deletePost(index) {
+      const posts = loadPosts();
+      posts.splice(index, 1);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+      renderPosts();
+    }
+
+    renderPosts();
+  </script>
+</body>
+</html>
