@@ -1,0 +1,109 @@
+mutation CreateDemoData @transaction @auth(level: PUBLIC, insecureReason: "This is a seed data mutation for development purposes.") {
+  user_insertMany(data: [
+    {
+      id: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      username: "john_doe",
+      email: "john.doe@example.com",
+      profilePictureUrl: "https://example.com/john.jpg",
+      createdAt: "2023-01-01T00:00:00Z"
+    },
+    {
+      id: "f1e2d3c4-b5a6-0987-6543-210fedcba987",
+      username: "jane_smith",
+      email: "jane.smith@example.com",
+      profilePictureUrl: "https://example.com/jane.jpg",
+      createdAt: "2023-01-02T00:00:00Z"
+    }
+  ])
+  content_insertMany(data: [
+    {
+      id: "11223344-5566-7788-9900-aabbccddeeff",
+      title: "Introduction to GraphQL",
+      type: "Article",
+      url: "https://example.com/graphql-intro",
+      description: "A comprehensive guide to GraphQL basics.",
+      tags: ["GraphQL", "Web Development"],
+      source: "Tech Blog",
+      createdAt: "2023-01-05T10:00:00Z"
+    },
+    {
+      id: "99887766-5544-3322-1100-ffeeddccbbaa",
+      title: "Learning Firebase Data Connect",
+      type: "Tutorial",
+      url: "https://example.com/firebase-dc-tutorial",
+      description: "Step-by-step tutorial for Firebase Data Connect.",
+      tags: ["Firebase", "Database", "GraphQL"],
+      source: "Google Developers",
+      createdAt: "2023-01-06T11:00:00Z"
+    }
+  ])
+  term_insertMany(data: [
+    {
+      id: "a0a0a0a0-b1b1-c2c2-d3d3-e4e4e4e4e4e4",
+      term: "GraphQL",
+      definition: "A query language for your API, and a server-side runtime for executing queries by using a type system you define for your data.",
+      examples: ["Fetching data from multiple sources in a single request."],
+      relatedTerms: ["REST", "API"],
+      createdAt: "2023-01-10T08:00:00Z"
+    },
+    {
+      id: "b0b0b0b0-c1c1-d2d2-e3e3-f4f4f4f4f4f4",
+      term: "Firebase",
+      definition: "Google's mobile and web application development platform.",
+      examples: ["Realtime data synchronization, authentication, hosting."],
+      relatedTerms: ["Backend as a Service", "Cloud"],
+      createdAt: "2023-01-11T09:00:00Z"
+    }
+  ])
+  weeklyDigest_insertMany(data: [
+    {
+      id: "c0c0c0c0-d1d1-e2e2-f3f3-040404040404",
+      digestDate: "2023-01-08",
+      title: "Weekly Tech Digest - Jan 8",
+      summary: "Highlights of the past week in tech, focusing on app development.",
+      createdAt: "2023-01-08T18:00:00Z"
+    }
+  ])
+  digestContent_insertMany(data: [
+    {
+      weeklyDigest: {id: "c0c0c0c0-d1d1-e2e2-f3f3-040404040404"},
+      content: {id: "11223344-5566-7788-9900-aabbccddeeff"}
+    },
+    {
+      weeklyDigest: {id: "c0c0c0c0-d1d1-e2e2-f3f3-040404040404"},
+      content: {id: "99887766-5544-3322-1100-ffeeddccbbaa"}
+    }
+  ])
+  digestTerm_insertMany(data: [
+    {
+      weeklyDigest: {id: "c0c0c0c0-d1d1-e2e2-f3f3-040404040404"},
+      term: {id: "a0a0a0a0-b1b1-c2c2-d3d3-e4e4e4e4e4e4"}
+    },
+    {
+      weeklyDigest: {id: "c0c0c0c0-d1d1-e2e2-f3f3-040404040404"},
+      term: {id: "b0b0b0b0-c1c1-d2d2-e3e3-f4f4f4f4f4f4"}
+    }
+  ])
+  favoriteContent_insertMany(data: [
+    {
+      user: {id: "a1b2c3d4-e5f6-7890-1234-567890abcdef"},
+      content: {id: "11223344-5566-7788-9900-aabbccddeeff"}
+    }
+  ])
+  subscriptionType_insertMany(data: [
+    {
+      user: {id: "a1b2c3d4-e5f6-7890-1234-567890abcdef"},
+      subscriptionStatus: "active",
+      lastNotificationSentAt: "2023-01-12T15:00:00Z",
+      createdAt: "2023-01-01T00:00:00Z"
+    }
+  ])
+  feedback_insertMany(data: [
+    {
+      user: {id: "f1e2d3c4-b5a6-0987-6543-210fedcba987"},
+      feedbackText: "Great content, very informative!",
+      suggestedTerm: "Generative AI",
+      createdAt: "2023-01-13T09:30:00Z"
+    }
+  ])
+}

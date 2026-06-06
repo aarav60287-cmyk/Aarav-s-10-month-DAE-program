@@ -1,0 +1,60 @@
+type User @table {
+  username: String!
+  email: String
+  profilePictureUrl: String
+  createdAt: Timestamp!
+}
+
+type Content @table {
+  title: String!
+  type: String!
+  url: String!
+  description: String
+  tags: [String]
+  source: String
+  createdAt: Timestamp!
+}
+
+type Term @table {
+  term: String!
+  definition: String!
+  examples: [String]
+  relatedTerms: [String]
+  createdAt: Timestamp!
+}
+
+type WeeklyDigest @table {
+  digestDate: Date!
+  title: String!
+  summary: String
+  createdAt: Timestamp!
+}
+
+type SubscriptionType @table {
+  user: User!
+  subscriptionStatus: String!
+  lastNotificationSentAt: Timestamp
+  createdAt: Timestamp!
+}
+
+type FavoriteContent @table(key: ["user", "content"]) {
+  user: User!
+  content: Content!
+}
+
+type Feedback @table {
+  user: User
+  suggestedTerm: String
+  feedbackText: String!
+  createdAt: Timestamp!
+}
+
+type DigestContent @table(key: ["weeklyDigest", "content"]) {
+  weeklyDigest: WeeklyDigest!
+  content: Content!
+}
+
+type DigestTerm @table(key: ["weeklyDigest", "term"]) {
+  weeklyDigest: WeeklyDigest!
+  term: Term!
+}

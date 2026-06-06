@@ -1,0 +1,42 @@
+mutation CreateNewUser($username: String!, $email: String!, $profilePictureUrl: String) @auth(level: PUBLIC, insecureReason: "New user registration is public to allow sign-up.") {
+  user_insert(data: {
+    username: $username,
+    email: $email,
+    profilePictureUrl: $profilePictureUrl,
+    createdAt_expr: "request.time"
+  }) {
+    id
+  }
+}
+
+query GetMyFavoriteContent @auth(level: USER, insecureReason: "This query retrieves user-specific favorite content.") {
+  users(where: {id_expr: "auth.uid"}) {
+    username
+    favoriteContents_on_user {
+      content {
+        title
+        url
+        type
+      }
+    }
+  }
+}
+
+mutation AddContentToWeeklyDigest($weeklyDigestId: UUID!, $contentId: UUID!) @auth(level: USER, insecureReason: "Users can add content to a weekly digest they own or have permission for, which is implicitly handled by the digest ID context.") {
+  digestContent_insert(data: {
+    weeklyDigestId: $weeklyDigestId,
+    contentId: $contentId
+  }) {
+    weeklyDigestId
+    contentId
+  }
+}
+
+query ListAllTerms @auth(level: PUBLIC, insecureReason: "Listing all terms is public to allow general browsing of definitions.") {
+  terms {
+    id
+    term
+    definition
+    examples
+  }
+}

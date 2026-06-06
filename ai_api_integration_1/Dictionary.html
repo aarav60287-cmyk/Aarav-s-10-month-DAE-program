@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dictionary | Brainrot Weekly</title>
+  <link rel="stylesheet" href="Ztyles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <h1>Brainrot Weekly</h1>
+    <ul>
+      <li><a href="Home.html">Home</a></li>
+      <li><a href="Blog.html">Blog</a></li>
+      <li><a href="Translator.html">Translator</a></li>
+      <li><a href="Trending.html">Trending</a></li>
+      <li><a href="Dictionary.html">Dictionary</a></li>
+    </ul>
+  </header>
+
+  <main class="main-layout">
+    
+    <section class="dictionary-header-block">
+      <div class="header-title-row">
+        <div class="title-group">
+          <span class="icon-book-badge">📖</span>
+          <h2 class="branding-title">BRAINROT DICTIONARY</h2>
+        </div>
+        <div class="search-engine-box">
+          <input type="text" id="searchBar" placeholder="Search current internet terms...">
+          <button id="searchBtn" class="search-action-btn">SEARCH</button>
+        </div>
+      </div>
+      <p class="subtitle-text">Deciphering Gen Z/Alpha Internet Slang.</p>
+    </section>
+
+    <nav class="alphabet-navigation-bar">
+      <span class="jump-label">JUMP TO:</span>
+      <div class="letters-track" id="alphabetTrack"></div>
+    </nav>
+
+    <section class="dictionary-cards-grid" id="dictionaryGrid"></section>
+
+    <section class="wild-submission-banner">
+      <div class="banner-content">
+        <span class="bulb-icon">💡</span>
+        <div class="banner-texts">
+          <h4>HEARD SOMETHING NEW IN THE WILD?</h4>
+          <p>Submit slang to our translation team and let AI rot-ify it.</p>
+        </div>
+      </div>
+      <button class="submit-slang-action">SUBMIT NEW SLANG</button>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Brainrot Weekly. Built different.</p>
+  </footer>
+
+  <script src="Words.js"></script>
+  <script>
+    let brainrotState = JSON.parse(localStorage.getItem('brainrot_state')) || {};
+
+    WORDS.forEach(item => {
+      if (!brainrotState[item.word]) {
+        brainrotState[item.word] = {
+          votes: 0,
+          hasVoted: false,
+          isBookmarked: false
+        };
+      }
+    });
+
+    function saveToStorage() {
+      localStorage.setItem('brainrot_state', JSON.stringify(brainrotState));
+    }
+
+    const dictionaryGrid = document.getElementById('dictionaryGrid');
+    const searchBar = document.getElementById('searchBar');
+    const searchBtn = document.getElementById('searchBtn');
+    const alphabetTrack = document.getElementById('alphabetTrack');
+    let selectedLetter = null;
+
+    function buildAlphabetBar() {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("");
+      alphabetTrack.innerHTML = "";
+
+      letters.forEach(letter => {
+        const btn = document.createElement('button');
+        btn.className = "letter-node";
+        btn.textContent = letter;
+
+        if (selectedLetter === letter) btn.classList.add('active');
+
+        btn.addEventListener('click', () => {
+          if (selectedLetter === letter) {
+            selectedLetter = null;
+            btn.classList.remove('active');
+          } else {
+            document.querySelectorAll('.letter-node').forEach(b => b.classList.remove('active'));
+            selectedLetter = letter;
+            btn.classList.add('active');
+          }
+          filterAndRender();
+        });
+
+        alphabetTrack.appendChild(btn);
+      });
+    }
+
+    function renderCards(wordsList) {
+      dictionaryGrid.innerHTML = "";
+
+      if (wordsList.length === 0) {
+        dictionaryGrid.innerHTML = '<div class="fallback-empty-state">No brainrot matching that query found. You are clean. 💀</div>';
+        return;
+      }
+
+      wordsList.forEach(item => {
+        const card = document.createElement('article');
+        card.className = "slang-brutalist-card";
+
+        const state = brainrotState[item.word];
+        const votedClass = state.hasVoted ? 'voted' : '';
+        const bookmarkedStyle = state.isBookmarked ? 'background: var(--color-accent);' : '';
+
+        card.innerHTML = `
+          <div class="card-top-header">
+            <h3 class="slang-term-heading">${item.word.toUpperCase()}</h3>
+            <span class="term-decorator-emoji">${item.emoji}</span>
+          </div>
+          <div class="card-definition-body">
+            <p class="definition-paragraph">${item.def}</p>
+            <p class="example-paragraph">"${item.example}"</p>
+          </div>
+          <div class="card-action-footer">
+            <div class="left-utility-cluster">
+              <button class="pill-metric-btn vote-btn ${votedClass}" data-word="${item.word}">
+                <span class="icon-thumb">👍</span>
+                <span class="counter-val">${state.votes}</span>
+              </button>
+              <button class="square-bookmark-btn bookmark-btn" data-word="${item.word}" style="${bookmarkedStyle}">🔖</button>
+            </div>
+            <button class="explain-forward-btn">EXPLAIN &rarr;</button>
+          </div>
+        `;
+
+        const voteBtn = card.querySelector('.vote-btn');
+        voteBtn.addEventListener('click', () => {
+          const word = voteBtn.getAttribute('data-word');
+          const counter = voteBtn.querySelector('.counter-val');
+          
+          if (!brainrotState[word].hasVoted) {
+            brainrotState[word].votes += 1;
+            brainrotState[word].hasVoted = true;
+            voteBtn.classList.add('voted');
+          } else {
+            brainrotState[word].votes -= 1;
+            brainrotState[word].hasVoted = false;
+            voteBtn.classList.remove('voted');
+          }
+          
+          counter.textContent = brainrotState[word].votes;
+          saveToStorage();
+        });
+
+        const bookmarkBtn = card.querySelector('.bookmark-btn');
+        bookmarkBtn.addEventListener('click', () => {
+          const word = bookmarkBtn.getAttribute('data-word');
+          
+          if (!brainrotState[word].isBookmarked) {
+            brainrotState[word].isBookmarked = true;
+            bookmarkBtn.style.background = "var(--color-accent)";
+          } else {
+            brainrotState[word].isBookmarked = false;
+            bookmarkBtn.style.background = "white";
+          }
+          
+          saveToStorage();
+        });
+
+        dictionaryGrid.appendChild(card);
+      });
+    }
+
+    function filterAndRender() {
+      const query = searchBar.value.toLowerCase().trim();
+
+      const filtered = WORDS.filter(item => {
+        const firstChar = item.word.charAt(0).toUpperCase();
+        let matchesLetter = true;
+
+        if (selectedLetter) {
+          if (selectedLetter === "#") {
+            matchesLetter = !/[A-Z]/.test(firstChar);
+          } else {
+            matchesLetter = (firstChar === selectedLetter);
+          }
+        }
+
+        const matchesQuery = item.word.toLowerCase().includes(query) ||
+                             item.def.toLowerCase().includes(query);
+
+        return matchesLetter && matchesQuery;
+      });
+
+      renderCards(filtered);
+    }
+
+    searchBar.addEventListener('input', filterAndRender);
+    searchBtn.addEventListener('click', filterAndRender);
+
+    buildAlphabetBar();
+    renderCards(WORDS);
+  </script>
+</body>
+</html>

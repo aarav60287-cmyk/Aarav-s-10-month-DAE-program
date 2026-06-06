@@ -8,15 +8,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
- 
+
   <header>
     <h1>Brainrot Weekly</h1>
-    <ul>
-      <li><a href="About.html">About</a></li>
-      <li><a href="Home.html">Home</a></li>
-      <li><a href="Translator.html">Translator</a></li>
-      <li><a href="Trending.html">Trending</a></li>
-    </ul>
+    <nav>
+      <ul>
+        <li><a href="About.html">About</a></li>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Translator.html">Translator</a></li>
+        <li><a href="Trending.html">Trending</a></li>
+        <li><a href="Dictionary.html">Dictionary</a></li>
+
+      </ul>
+    </nav>
   </header>
 
   <section class="welcome-box">
@@ -32,17 +36,17 @@
     </div>
 
     <div id="blogFeed" style="width: 100%; max-width: 600px; margin-top: 20px;">
-      </div>
+    </div>
   </section>
 
   <script>
     const STORAGE_KEY = "brainrot_blog_posts";
 
     const defaultPosts = [
-      { 
-        title: "AURA CHECK 2026", 
-        content: "If you're still using 2024 slang, your aura is officially in the negatives.", 
-        date: "April 15, 2026" 
+      {
+        title: "AURA CHECK 2026",
+        content: "If you're still using 2024 slang, your aura is officially in the negatives.",
+        date: "April 15, 2026"
       }
     ];
 
@@ -57,9 +61,8 @@
       feed.innerHTML = "";
 
       posts.slice().reverse().forEach((post, index) => {
-        const realIndex = posts.length - 1 - index; 
-        
-        // This generates the same .feature-card look for every post
+        const realIndex = posts.length - 1 - index;
+
         feed.innerHTML += `
           <div class="feature-card" style="margin-bottom: 25px; text-align: left;">
             <h3 style="border-bottom: none;">${post.title}</h3>
@@ -74,8 +77,8 @@
     function addPost() {
       const tInput = document.getElementById("postTitle");
       const cInput = document.getElementById("postContent");
-      
-      if(!tInput.value || !cInput.value) return alert("Fill it out, blud.");
+
+      if (!tInput.value || !cInput.value) return alert("Fill it out, blud.");
 
       const posts = loadPosts();
       posts.push({
@@ -99,5 +102,10 @@
 
     renderPosts();
   </script>
+  
+  <footer>
+    <p>&copy; 2026 Brainrot Weekly. Built different.</p>
+  </footer>
+
 </body>
 </html>

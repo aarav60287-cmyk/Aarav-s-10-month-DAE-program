@@ -1,57 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brainrot Weekly</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Ztyles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brainrot Weekly</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Ztyles.css">
+<style>
+.ticker-wrap { overflow: hidden; white-space: nowrap; background: var(--color-accent); border-bottom: 3px solid var(--color-text); padding: 8px 0; }
+.ticker-track { display: inline-block; animation: tickscroll 26s linear infinite; font-family: var(--font-heading); font-size: 1.1rem; letter-spacing: 3px; color: var(--color-text); }
+@keyframes tickscroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+
+.hero-section { text-align: center; padding: 64px 32px 48px; max-width: 900px; margin: 0 auto; }
+.hero-section h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 1.0;
+  color: var(--color-primary);
+  text-shadow: 4px 4px 0px var(--color-accent);
+  font-style: italic;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.hero-section > p { font-size: 1.1rem; font-weight: 700; color: #555; max-width: 540px; margin: 0 auto 32px; line-height: 1.7; }
+.hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btn-teal {
+  font-family: var(--font-heading); font-size: 1.3rem; color: white; cursor: pointer;
+  background-color: var(--color-secondary); padding: 10px 28px; border-radius: 50px;
+  border: 3px solid var(--color-text); box-shadow: 4px 4px 0px var(--color-text);
+  display: inline-block; transition: all 0.1s; text-decoration: none;
+}
+.btn-teal:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0px var(--color-text); }
+
+/* WOTD */
+.wotd-section { max-width: 760px; margin: 0 auto 16px; padding: 0 32px; }
+.wotd-inner {
+  background: var(--color-card-bg);
+  border: 3px solid var(--color-text);
+  border-radius: var(--border-radius);
+  padding: 32px 36px;
+  box-shadow: 8px 8px 0px var(--color-secondary);
+}
+.wotd-eyebrow { font-size: 0.7rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; color: var(--color-secondary); margin-bottom: 10px; }
+#wotdTerm {
+  font-family: var(--font-heading); font-size: 3.8rem; color: var(--color-primary);
+  text-shadow: 3px 3px 0 var(--color-accent); font-style: italic; letter-spacing: 1px;
+  min-height: 1.1em; line-height: 1;
+}
+#wotdTerm.loading { color: #ccc; animation: wpulse 1s ease-in-out infinite; text-shadow: none; }
+@keyframes wpulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+#wotdDef { font-size: 0.95rem; font-weight: 700; color: #555; margin-top: 10px; line-height: 1.6; }
+.wotd-examples { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+.ex-box { padding: 14px 16px; border-radius: 10px; border: 2px dashed; }
+.ex-box.young { background: #FFFDE7; border-color: var(--color-accent); }
+.ex-box.old { background: #edfcf9; border-color: var(--color-secondary); }
+.ex-label { font-size: 0.65rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
+.ex-box.young .ex-label { color: #b8860b; }
+.ex-box.old .ex-label { color: var(--color-secondary); }
+.ex-text { font-size: 0.9rem; font-weight: 700; color: var(--color-text); }
+.wotd-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 10px; }
+.pill-group { display: flex; gap: 8px; }
+.pill { font-family: var(--font-heading); font-size: 0.95rem; padding: 4px 16px; border-radius: 50px; border: 2px solid var(--color-text); }
+.pill-slang { background: #edfcf9; color: var(--color-secondary); }
+.pill-hot { background: #fff0f0; color: var(--color-primary); }
+.new-word-btn {
+  font-family: var(--font-heading); font-size: 1rem; background: white;
+  color: var(--color-text); border: 2.5px solid var(--color-text); padding: 6px 20px;
+  border-radius: 50px; box-shadow: 3px 3px 0 var(--color-text); cursor: pointer; transition: all 0.1s;
+}
+.new-word-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--color-text); }
+
+/* WORD COUNT BADGE */
+.wotd-count-badge {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  background: var(--color-accent);
+  color: var(--color-text);
+  border: 2px solid var(--color-text);
+  border-radius: 50px;
+  padding: 3px 14px;
+  margin-left: 10px;
+  vertical-align: middle;
+  box-shadow: 2px 2px 0 var(--color-text);
+}
+
+.dashed-rule { border: none; border-top: 3px dashed var(--color-secondary); max-width: 760px; margin: 32px auto; }
+
+/* FEATURES — forced 4-col single row */
+.section-wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+.section-heading-row { margin-bottom: 20px; }
+.section-heading-row h2 { text-align: left; font-size: 2.3rem; text-shadow: 2px 2px 0 var(--color-accent); font-style: italic; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.feat-card {
+  background: var(--color-card-bg); border: 3px solid var(--color-text);
+  border-radius: var(--border-radius); padding: 24px;
+  box-shadow: 8px 8px 0px var(--color-secondary); text-decoration: none; color: inherit;
+  display: block; transition: transform 0.1s, box-shadow 0.1s;
+}
+.feat-card:hover { transform: translate(-3px,-3px); box-shadow: 11px 11px 0 var(--color-text); }
+.feat-emoji { font-size: 2.2rem; margin-bottom: 12px; }
+.feat-card h3 { color: var(--color-primary); font-size: 1.6rem; text-shadow: none; border-bottom: 3px dashed var(--color-accent); padding-bottom: 8px; margin-bottom: 10px; }
+.feat-card p { font-size: 0.88rem; font-weight: 700; color: #666; line-height: 1.6; }
+
+.submit-banner {
+  border: 3px dashed var(--color-secondary); border-radius: 16px;
+  background: #edfcf9; padding: 28px 32px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+  margin-top: 32px; margin-bottom: 48px;
+}
+.sb-left { display: flex; align-items: center; gap: 16px; }
+.sb-icon { font-size: 2.5rem; }
+.sb-title { font-family: var(--font-heading); font-size: 1.6rem; color: var(--color-text); letter-spacing: 0.5px; }
+.sb-sub { font-size: 0.88rem; font-weight: 700; color: #555; margin-top: 4px; }
+
+@media(max-width: 900px) {
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media(max-width: 600px) {
+  header { flex-direction: column; gap: 12px; }
+  nav ul { flex-wrap: wrap; justify-content: center; }
+  .wotd-examples { grid-template-columns: 1fr; }
+  .hero-section { padding: 40px 20px 32px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .submit-banner { flex-direction: column; align-items: flex-start; }
+  .submit-banner .btn { width: 100%; text-align: center; }
+}
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>Brainrot Weekly</h1>
-    <nav>
-      <ul>
-        <li><a href="About.html">About</a></li>
-        <li><a href="Blog.html">Blog</a></li>
-        <li><a href="Translator.html">Translator</a></li>
-        <li><a href="Trending.html">Trending</a></li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <h1>Brainrot Weekly</h1>
+  <nav>
+    <ul>
+      <li><a href="About.html">About</a></li>
+      <li><a href="Blog.html">Blog</a></li>
+      <li><a href="Translator.html">Translator</a></li>
+      <li><a href="Trending.html">Trending</a></li>
+      <li><a href="Dictionary.html">Dictionary</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <section class="welcome-box">
-    <h2>Word of the Day</h2>
-    <div id="wotdCard" class="feature-card" style="width: 100%; max-width: 500px; margin: 20px auto; min-height: 80px;">
-      <h3 id="wotdTerm" style="color: var(--color-primary); font-size: 1.4rem;">Loading...</h3>
+<div class="ticker-wrap">
+  <span class="ticker-track">✦ NO CAP ✦ SLAY ✦ FR FR ✦ ON GOD ✦ RIZZ ✦ DELULU ✦ GYATT ✦ BUSSIN ✦ LOWKEY ✦ NPC ✦ UNDERSTOOD THE ASSIGNMENT ✦ RENT FREE ✦ MAIN CHARACTER ✦ CAUGHT IN 4K ✦ BASED ✦ BIG YIKES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</div>
+
+<section class="hero-section">
+  <h2>Decode Every<br>Generation's Slang 🧠</h2>
+  <p>Stay ahead of the internet. Search the dictionary, use the translator, and never get caught lacking in the comments again. No cap.</p>
+  <div class="hero-btns">
+    <a href="Translator.html" class="btn">Start Translating 🚀</a>
+    <a href="Dictionary.html" class="btn-teal">Explore Dictionary 📖</a>
+  </div>
+</section>
+
+<div class="wotd-section">
+  <div class="wotd-inner">
+    <div class="wotd-eyebrow">✦ Word of the Day ✦ <span class="wotd-count-badge" id="wotdCount">1 / 67</span></div>
+    <div id="wotdTerm" class="loading">Loading...</div>
+    <div id="wotdDef"></div>
+    <div class="wotd-examples" id="wotdExamples">
+      <div class="ex-box young">
+        <div class="ex-label">😎 Gen Z Version</div>
+        <div class="ex-text" id="exYoung"></div>
+      </div>
+      <div class="ex-box old">
+        <div class="ex-label">🙂 Classic Version</div>
+        <div class="ex-text" id="exOld"></div>
+      </div>
     </div>
-  </section>
+    <div class="wotd-foot">
+      <div class="pill-group">
+        <span class="pill pill-slang">Slang</span>
+        <span class="pill pill-hot">🔥 Viral</span>
+      </div>
+      <button class="new-word-btn" onclick="nextWord()">Next Word ↻</button>
+    </div>
+  </div>
+</div>
 
-  <script>
-    async function loadWordOfTheDay() {
-      const termEl = document.getElementById("wotdTerm");
+<hr class="dashed-rule">
 
-      try {
-        const response = await fetch("https://api.allorigins.win/raw?url=https://api.urbandictionary.com/v0/random", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" }
-        });
+<section class="section-wrap" style="margin-bottom: 40px;">
+  <div class="section-heading-row"><h2>What We Do 📖</h2></div>
+  <div class="features-grid">
+    <a href="Dictionary.html" class="feat-card">
+      <div class="feat-emoji">📚</div>
+      <h3>Dictionary</h3>
+      <p>Every word, defined. From "rizz" to "delulu" — the whole glossary, no cap.</p>
+    </a>
+    <a href="Translator.html" class="feat-card">
+      <div class="feat-emoji">🔄</div>
+      <h3>Translator</h3>
+      <p>Type anything. Get it back in full brainrot. Or vice versa — we don't judge.</p>
+    </a>
+    <a href="Trending.html" class="feat-card">
+      <div class="feat-emoji">📈</div>
+      <h3>Trending</h3>
+      <p>What's blowing up right now. Updated weekly so you're never caught lacking.</p>
+    </a>
+    <a href="Blog.html" class="feat-card">
+      <div class="feat-emoji">✍️</div>
+      <h3>Blog</h3>
+      <p>Deep dives into internet culture. The lore, the origins, the whole arc.</p>
+    </a>
+  </div>
 
-        if (response.status === 200) {
-          const data = await response.json();
-          termEl.innerText = data.list[0].word;
-        } else {
-          termEl.innerText = "No cap, API is cooked.";
-        }
-      } catch (error) {
-        termEl.innerText = "Failed to fetch. L + ratio.";
-        console.error("WOTD Fetch Error:", error);
-      }
-    }
+  <div class="submit-banner">
+    <div class="sb-left">
+      <div class="sb-icon">💡</div>
+      <div>
+        <div class="sb-title">Know a Word We're Missing?</div>
+        <div class="sb-sub">Submit your slang and get credited. Built by the community, fr fr.</div>
+      </div>
+    </div>
+    <a href="Dictionary.html" class="btn">Submit Slang ✦</a>
+  </div>
+</section>
 
-    loadWordOfTheDay();
-  </script>
+<footer>
+  <p>© 2026 Brainrot Weekly. Built different.</p>
+  <div class="footer-links-row">
+    <a href="About.html">About</a>
+    <a href="Blog.html">Blog</a>
+    <a href="Dictionary.html">Dictionary</a>
+  </div>
+</footer>
 
+<script>
+const TOTAL = 67;
+let currentIndex = 1;
+let wordPool = [];
+
+function clean(s) { return s.replace(/\[|\]/g, ''); }
+
+async function fetchWords() {
+  const res = await fetch('https://api.allorigins.win/raw?url=https://api.urbandictionary.com/v0/random');
+  if (!res.ok) throw new Error('fetch failed');
+  const data = await res.json();
+  return data.list || [];
+}
+
+async function showWord(entry) {
+  const termEl = document.getElementById('wotdTerm');
+  const defEl = document.getElementById('wotdDef');
+  const exEl = document.getElementById('wotdExamples');
+  const countEl = document.getElementById('wotdCount');
+
+  termEl.classList.remove('loading');
+  termEl.textContent = entry.word;
+  defEl.textContent = clean(entry.definition).substring(0, 140) + (entry.definition.length > 140 ? '...' : '');
+  document.getElementById('exYoung').textContent = entry.example ? '"' + clean(entry.example).substring(0, 70) + '"' : '"No example available"';
+  document.getElementById('exOld').textContent = '"The classic equivalent of: ' + entry.word + '"';
+  exEl.style.display = 'grid';
+  countEl.textContent = currentIndex + ' / ' + TOTAL;
+}
+
+async function nextWord() {
+  const termEl = document.getElementById('wotdTerm');
+  termEl.textContent = 'Loading...';
+  termEl.classList.add('loading');
+  document.getElementById('wotdExamples').style.display = 'none';
+
+  if (wordPool.length === 0) {
+    try { wordPool = await fetchWords(); } catch { termEl.textContent = 'L + ratio + offline'; return; }
+  }
+
+  const entry = wordPool.shift();
+  currentIndex = Math.min(currentIndex + 1, TOTAL);
+  await showWord(entry);
+
+  if (wordPool.length < 3) {
+    fetchWords().then(w => { wordPool = wordPool.concat(w); }).catch(() => {});
+  }
+}
+
+async function loadWotd() {
+  const termEl = document.getElementById('wotdTerm');
+  termEl.textContent = 'Loading...';
+  termEl.classList.add('loading');
+  document.getElementById('wotdExamples').style.display = 'none';
+  try {
+    wordPool = await fetchWords();
+    const entry = wordPool.shift();
+    currentIndex = 1;
+    await showWord(entry);
+  } catch {
+    termEl.textContent = 'L + ratio + offline';
+    termEl.classList.remove('loading');
+  }
+}
+
+loadWotd();
+</script>
 </body>
 </html>
