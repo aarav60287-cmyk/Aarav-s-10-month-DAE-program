@@ -4,186 +4,224 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trending | Brainrot Weekly</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <meta name="description" content="What's rising and what's getting cooked in internet culture this week. Live slang momentum analytics.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="Ztyles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
+    .trend-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      max-width: 640px;
+    }
     .trend-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 0;
       border-bottom: 2px dashed #eee;
+      font-family: var(--font-body);
     }
-    .trend-item:last-child {
-      border-bottom: none;
+    .trend-item:last-child { border-bottom: none; }
+    .trend-name { font-weight: 700; color: var(--color-text); }
+    .trend-name.faded { opacity: 0.5; }
+    .velocity-up { color: #2ecc71; font-weight: 900; font-size: 0.9rem; }
+    .velocity-down { color: var(--color-primary); font-weight: 900; font-size: 0.9rem; }
+    .trend-loading { color: #bbb; font-style: italic; font-family: var(--font-body); font-size: 0.9rem; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+    .aura-result {
+      margin-top: 16px;
+      display: none;
+      text-align: center;
     }
-    .velocity-up {
-      color: #2ecc71;
-      font-weight: 900;
-    }
-    .velocity-down {
+    .aura-score {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
       color: var(--color-primary);
-      font-weight: 900;
+    }
+    .aura-verdict {
+      font-weight: 700;
+      color: #555;
+      font-family: var(--font-body);
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+    @media(max-width: 600px) {
+      .trend-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Brainrot Weekly</h1>
-    <nav>
-      <ul>
-        <li><a href="Home.html">Home</a></li>
-        <li><a href="About.html">About</a></li>
-        <li><a href="Blog.html">Blog</a></li>
-        <li><a href="Translator.html">Translator</a></li>
-        <li><a href="Dictionary.html">Dictionary</a></li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <h1><a href="Home.html">Brainrot Weekly</a></h1>
+  <nav>
+    <ul>
+      <li><a href="Home.html">Home</a></li>
+      <li><a href="About.html">About</a></li>
+      <li><a href="Blog.html">Blog</a></li>
+      <li><a href="Translator.html">Translator</a></li>
+      <li><a href="Dictionary.html">Dictionary</a></li>
+      <li><a href="Login.html">Log In</a></li>
+    </ul>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
 
-  <main style="flex: 1;">
-    <section class="welcome-box">
-      <h2>Slang Momentum Analytics</h2>
-      <p>Real-time analytics engine tracking linguistic velocity across network nodes.</p>
-      
-      <div id="analyticsSection" style="width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 15px;">
-        <div class="feature-card" style="text-align: left;">
-          <h3>Gaining Aura (Rising)</h3>
-          <div id="risingContainer">
-            <p>Scanning the matrix...</p>
-          </div>
-        </div>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="Home.html">Home</a>
+  <a href="About.html">About</a>
+  <a href="Blog.html">Blog</a>
+  <a href="Translator.html">Translator</a>
+  <a href="Dictionary.html">Dictionary</a>
+  <a href="Login.html">Log In</a>
+</nav>
 
-        <div class="feature-card" style="text-align: left;">
-          <h3>Falling Off (Cooked)</h3>
-          <div id="fallingContainer">
-            <p>Scanning the matrix...</p>
-          </div>
-        </div>
+<main style="flex:1;">
+  <section class="welcome-box">
+    <h2>Slang Momentum 📈</h2>
+    <p>What's blowing up and what's getting cooked this week.</p>
+
+    <div class="trend-grid">
+      <div class="feature-card" style="text-align:left;margin-bottom:0;">
+        <h3>🚀 Gaining Aura</h3>
+        <div id="risingContainer"><p class="trend-loading">Scanning the matrix...</p></div>
       </div>
-
-      <div class="feature-card" style="max-width: 500px; text-align: left; margin-top: 20px;">
-        <h3>Aura Value Evaluator</h3>
-        <p style="margin-bottom: 10px;">Check your structural background metric before posting.</p>
-        <input type="text" id="auraInput" placeholder="Enter a phrase you say often..." class="post-input">
-        <div style="text-align: center; margin-top: 10px;">
-          <button onclick="calculateAura()" class="btn">Evaluate Aura</button>
-        </div>
-        <div id="auraResult" style="margin-top: 15px; display: none; text-align: center;">
-          <p id="auraScore" style="font-family: var(--font-heading); font-size: 2rem; color: var(--color-primary);"></p>
-          <p id="auraVerdict" style="font-weight: 700; margin-top: 5px;"></p>
-        </div>
+      <div class="feature-card" style="text-align:left;margin-bottom:0;">
+        <h3>💀 Getting Cooked</h3>
+        <div id="fallingContainer"><p class="trend-loading">Scanning the matrix...</p></div>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <footer>
-    <p>&copy; 2026 Brainrot Weekly. Built different.</p>
-  </footer>
+    <div class="feature-card" style="max-width:500px;width:100%;text-align:left;margin-top:0;">
+      <h3>Aura Evaluator ✨</h3>
+      <p style="margin-bottom:12px;">Check if a phrase is based or cringe before you post it.</p>
+      <div class="search-engine-box">
+        <input type="text" id="auraInput" placeholder="Enter a phrase you say often..." aria-label="Phrase to evaluate">
+        <button onclick="calculateAura()" class="search-action-btn">Evaluate</button>
+      </div>
+      <div class="aura-result" id="auraResult">
+        <div class="aura-score" id="auraScore"></div>
+        <div class="aura-verdict" id="auraVerdict"></div>
+      </div>
+    </div>
+  </section>
+</main>
 
-  <script>
-    const API_KEY = "API_KEY_HERE";
-    const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+<footer>
+  <p>© 2026 Brainrot Weekly. Built different.</p>
+  <div class="footer-links-row">
+    <a href="Home.html">Home</a>
+    <a href="Dictionary.html">Dictionary</a>
+    <a href="Translator.html">Translator</a>
+  </div>
+</footer>
 
-    async function loadTrendingData() {
-      const risingBox = document.getElementById("risingContainer");
-      const fallingBox = document.getElementById("fallingContainer");
+<script>
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.getElementById('mobileNav').classList.toggle('open');
+  });
 
-      const promptText = "Generate 3 highly popular current internet/Gen-Alpha slang terms that are trending UP, and 2 terms that are outdated or trending DOWN ('cooked'). Your response MUST be a single raw JSON object matching this template exactly, with no markdown codeblocks, no backticks, and no extra text: {\"rising\": [{\"term\": \"slang1\", \"metric\": \"+420% velocity\"}, {\"term\": \"slang2\", \"metric\": \"+180% volume\"}, {\"term\": \"slang3\", \"metric\": \"+95% lock-in\"}], \"falling\": [{\"term\": \"slang4\", \"metric\": \"-75% drop\"}, {\"term\": \"slang5\", \"metric\": \"-99% cringe saturation\"}]}";
+  const API_KEY = "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";
+  const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-      try {
-        const response = await fetch(OPENROUTER_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${API_KEY}` },
-          body: JSON.stringify({
-            model: "google/gemini-2.5-flash",
-            messages: [{ role: "user", content: promptText }],
-            temperature: 0.8
-          })
-        });
+  async function loadTrendingData() {
+    const risingBox = document.getElementById("risingContainer");
+    const fallingBox = document.getElementById("fallingContainer");
 
-        if (!response.ok) throw new Error();
-        const data = await response.json();
-        let rawContent = data.choices[0].message.content.trim();
+    const prompt = `Generate 3 current internet/Gen-Alpha slang terms trending UP and 2 trending DOWN. Respond ONLY with raw JSON, no markdown, no backticks:
+{"rising":[{"term":"word","metric":"+420% velocity"},{"term":"word","metric":"+180% volume"},{"term":"word","metric":"+95% lock-in"}],"falling":[{"term":"word","metric":"-75% drop"},{"term":"word","metric":"-99% cringe"}]}`;
 
-        if (rawContent.startsWith("```")) {
-          rawContent = rawContent.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
-        }
+    try {
+      const res = await fetch(OPENROUTER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${API_KEY}` },
+        body: JSON.stringify({
+          model: "openrouter/auto",
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.8,
+          max_tokens: 200
+        })
+      });
 
-        const result = JSON.parse(rawContent);
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      const data = await res.json();
+      let raw = data.choices[0].message.content.trim().replace(/^```json?\s*/i,'').replace(/```$/,'').trim();
+      const result = JSON.parse(raw);
 
-        risingBox.innerHTML = result.rising.map(item => `
-          <div class="trend-item">
-            <span style="font-weight:700;">${item.term}</span>
-            <span class="velocity-up">${item.metric}</span>
-          </div>
-        `).join('');
+      risingBox.innerHTML = result.rising.map(item => `
+        <div class="trend-item">
+          <span class="trend-name">${item.term}</span>
+          <span class="velocity-up">${item.metric}</span>
+        </div>`).join('');
 
-        fallingBox.innerHTML = result.falling.map(item => `
-          <div class="trend-item">
-            <span style="font-weight:700; opacity: 0.6;">${item.term}</span>
-            <span class="velocity-down">${item.metric}</span>
-          </div>
-        `).join('');
+      fallingBox.innerHTML = result.falling.map(item => `
+        <div class="trend-item">
+          <span class="trend-name faded">${item.term}</span>
+          <span class="velocity-down">${item.metric}</span>
+        </div>`).join('');
 
-      } catch (error) {
-        risingBox.innerHTML = "<p>Failed to parse network vectors.</p>";
-        fallingBox.innerHTML = "<p>Database index is cooked.</p>";
-        console.error(error);
-      }
+    } catch (e) {
+      risingBox.innerHTML = "<p style='color:#bbb;font-family:var(--font-body);font-size:0.9rem;'>Couldn't load — API key needed.</p>";
+      fallingBox.innerHTML = "<p style='color:#bbb;font-family:var(--font-body);font-size:0.9rem;'>Couldn't load — API key needed.</p>";
+      console.error(e);
     }
+  }
 
-    async function calculateAura() {
-      const text = document.getElementById("auraInput").value.trim();
-      const resultDiv = document.getElementById("auraResult");
-      const scoreEl = document.getElementById("auraScore");
-      const verdictEl = document.getElementById("auraVerdict");
+  async function calculateAura() {
+    const text = document.getElementById("auraInput").value.trim();
+    const resultDiv = document.getElementById("auraResult");
+    const scoreEl = document.getElementById("auraScore");
+    const verdictEl = document.getElementById("auraVerdict");
 
-      if (!text) return alert("Enter some text, boss.");
+    if (!text) return;
 
-      resultDiv.style.display = "block";
-      scoreEl.innerText = "CALCULATING...";
-      verdictEl.innerText = "Analyzing social resonance paradigms...";
+    resultDiv.style.display = "block";
+    scoreEl.style.color = "var(--color-primary)";
+    scoreEl.innerText = "CALCULATING...";
+    verdictEl.innerText = "Analyzing your social resonance...";
 
-      const promptText = `Analyze the phrase: "${text}". Determine if using this phrase gives someone positive aura points or negative aura points based on modern internet subculture. Respond ONLY with a raw JSON object using this template, no markdown or backticks: {"score": "+500 Aura" or "-10,000 Aura", "verdict": "A brief, funny explanation of why it is based or cringe."}`;
+    const prompt = `Analyze the phrase: "${text}". Does using this phrase give someone positive or negative aura in modern internet subculture? Respond ONLY with raw JSON, no markdown:
+{"score":"+500 Aura","verdict":"Brief funny explanation of why it is based or cringe."}`;
 
-      try {
-        const response = await fetch(OPENROUTER_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${API_KEY}` },
-          body: JSON.stringify({
-            model: "google/gemini-2.5-flash",
-            messages: [{ role: "user", content: promptText }],
-            temperature: 0.7
-          })
-        });
+    try {
+      const res = await fetch(OPENROUTER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${API_KEY}` },
+        body: JSON.stringify({
+          model: "openrouter/auto",
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.7,
+          max_tokens: 100
+        })
+      });
 
-        const data = await response.json();
-        let rawContent = data.choices[0].message.content.trim();
-        if (rawContent.startsWith("```")) {
-          rawContent = rawContent.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
-        }
+      const data = await res.json();
+      let raw = data.choices[0].message.content.trim().replace(/^```json?\s*/i,'').replace(/```$/,'').trim();
+      const result = JSON.parse(raw);
 
-        const result = JSON.parse(rawContent);
+      scoreEl.innerText = result.score;
+      verdictEl.innerText = result.verdict;
+      scoreEl.style.color = result.score.includes("-") ? "var(--color-primary)" : "var(--color-secondary)";
 
-        scoreEl.innerText = result.score;
-        verdictEl.innerText = result.verdict;
-
-        if (result.score.includes("-")) {
-          scoreEl.style.color = "var(--color-primary)";
-        } else {
-          scoreEl.style.color = "var(--color-secondary)";
-        }
-
-      } catch (e) {
-        scoreEl.innerText = "ERROR";
-        verdictEl.innerText = "Calculation matrix broke down. Try a less powerful phrase.";
-      }
+    } catch(e) {
+      scoreEl.innerText = "ERROR";
+      verdictEl.innerText = "Calculation broke down. Try again.";
     }
+  }
 
-    loadTrendingData();
-  </script>
+  // Allow Enter key in aura input
+  document.getElementById('auraInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') calculateAura();
+  });
 
+  loadTrendingData();
+</script>
 </body>
 </html>

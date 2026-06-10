@@ -4,172 +4,181 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Brainrot Weekly</title>
-  <link rel="stylesheet" href="./Ztyles.css">
+  <meta name="description" content="Log in or sign up to Brainrot Weekly.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="Ztyles.css">
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    body { justify-content: center; min-height: 100vh; background: var(--color-background); }
+    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .or-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0; }
+    .or-divider hr { flex:1; border:none; border-top: 2px dashed #ccc; }
+    .or-divider span { font-size: 0.8rem; font-weight: 900; color: #aaa; font-family: var(--font-body); }
+    .social-btn {
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+      font-family: var(--font-heading); font-size: 1.2rem; padding: 10px 16px;
+      border: 3px solid var(--color-text); border-radius: 50px; cursor: pointer;
+      box-shadow: 3px 3px 0 var(--color-text); transition: transform 0.1s, box-shadow 0.1s;
+      margin-bottom: 10px; background: white; color: var(--color-text);
+    }
+    .social-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--color-text); }
+    .social-btn img { width: 22px; height: 22px; object-fit: contain; }
+  </style>
 </head>
 <body>
-  <main>
-    <div class="box">
-      <h1>Brainrot Weekly</h1>
-      <p class="section-heading" id="modeLabel">Log in for your weekly dose of brainrot</p>
+<main>
+  <div class="box">
+    <h1>Brainrot Weekly</h1>
+    <p class="section-heading" id="modeLabel">Log in for your weekly dose of brainrot</p>
 
-      <div class="auth-buttons">
-        <button aria-label="Log in with Google" type="button">
-          <img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" alt="Google Logo" width="28">
-        </button>
-        <button aria-label="Log in with Facebook" type="button">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook Logo" width="28">
-        </button>
-        <button aria-label="Log in with Apple" type="button">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo" width="28">
-        </button>
-      </div>
+    <!-- Social logins -->
+    <button class="social-btn" id="googleBtn">
+      <img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" alt="Google">
+      Continue with Google
+    </button>
+    <button class="social-btn" id="facebookBtn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook">
+      Continue with Facebook
+    </button>
+    <button class="social-btn" id="appleBtn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
+      Continue with Apple
+    </button>
 
-      <input type="email" class="post-input" id="emailInput" placeholder="Email" required>
-      <input type="password" class="post-input" id="passInput" placeholder="Password" required>
-      <div id="confirmWrap" style="display: none;">
-        <input type="password" class="post-input" id="confirmInput" placeholder="Confirm Password">
-      </div>
+    <div class="or-divider"><hr><span>OR</span><hr></div>
 
-      <p id="msgBox" style="font-weight: 700; font-size: 0.9rem; min-height: 20px; color: #ff4d4d; margin: 6px 0;"></p>
-
-      <div style="margin-top: 12px;">
-        <button class="login-button" id="mainBtn" onclick="handleMain()">Log In</button>
-      </div>
-
-      <p style="font-weight: 700; margin-top: 12px; font-size: 0.9rem; cursor: pointer; text-decoration: underline;" onclick="toggleMode()" id="toggleLink">
-        Don't have an account? Sign Up
-      </p>
-
-      <footer>
-        <p class="footer-text-small">Sid and Pichy asked me to put their name here.</p>
-      </footer>
+    <input type="email" class="post-input" id="emailInput" placeholder="Email" required autocomplete="email">
+    <input type="password" class="post-input" id="passInput" placeholder="Password" required autocomplete="current-password">
+    <div id="confirmWrap" style="display:none;">
+      <input type="password" class="post-input" id="confirmInput" placeholder="Confirm Password" autocomplete="new-password">
     </div>
-  </main>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    <p id="msgBox" style="font-weight:700;font-size:0.9rem;min-height:20px;color:#ff4d4d;margin:6px 0;font-family:var(--font-body);"></p>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCRGeBUhsZoF9Epl2xpaJ4KISfunl9lLsI",
-      authDomain: "brainrot-weekly.firebaseapp.com",
-      projectId: "brainrot-weekly",
-      storageBucket: "brainrot-weekly.firebasestorage.app",
-      messagingSenderId: "46085324988",
-      appId: "1:46085324988:web:f330daeb1db3cc6c36d0b9",
-      measurementId: "G-D9LTXGCW3S"
-    };
+    <button class="login-button" id="mainBtn" onclick="handleMain()">Log In</button>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    <p style="font-weight:700;margin-top:12px;font-size:0.9rem;cursor:pointer;text-decoration:underline;font-family:var(--font-body);" onclick="toggleMode()" id="toggleLink">
+      Don't have an account? Sign Up
+    </p>
 
-    emailjs.init("cXMJMX3GNZFyL7wlP");
+    <a href="Home.html" class="guest-link">Continue as Guest →</a>
 
-    let isSignup = false;
+    <p class="footer-text-small">© 2026 Brainrot Weekly — Sid and Pichy fr</p>
+  </div>
+</main>
 
-    window.toggleMode = function() {
-      isSignup = !isSignup;
-      document.getElementById('modeLabel').innerText = isSignup ? "Create your account" : "Log in for your weekly dose";
-      document.getElementById('mainBtn').innerText = isSignup ? "Sign Up" : "Log In";
-      document.getElementById('mainBtn').className = isSignup ? "signup-button" : "login-button";
-      document.getElementById('confirmWrap').style.display = isSignup ? "block" : "none";
-      document.getElementById('toggleLink').innerText = isSignup
-        ? "Already have an account? Log In"
-        : "Don't have an account? Sign Up";
-      const msg = document.getElementById('msgBox');
-      msg.style.color = "#ff4d4d";
-      msg.innerText = "";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    FacebookAuthProvider,
+    OAuthProvider,
+    signInAnonymously
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCRGeBUhsZoF9Epl2xpaJ4KISfunl9lLsI",
+    authDomain: "brainrot-weekly.firebaseapp.com",
+    projectId: "brainrot-weekly",
+    storageBucket: "brainrot-weekly.firebasestorage.app",
+    messagingSenderId: "46085324988",
+    appId: "1:46085324988:web:f330daeb1db3cc6c36d0b9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
+  const appleProvider = new OAuthProvider('apple.com');
+
+  let isSignup = false;
+
+  window.toggleMode = function() {
+    isSignup = !isSignup;
+    document.getElementById('modeLabel').innerText = isSignup ? "Create your account" : "Log in for your weekly dose";
+    document.getElementById('mainBtn').innerText = isSignup ? "Sign Up" : "Log In";
+    document.getElementById('mainBtn').className = isSignup ? "signup-button" : "login-button";
+    document.getElementById('confirmWrap').style.display = isSignup ? "block" : "none";
+    document.getElementById('toggleLink').innerText = isSignup ? "Already have an account? Log In" : "Don't have an account? Sign Up";
+    document.getElementById('msgBox').innerText = "";
+  };
+
+  async function socialLogin(provider) {
+    try {
+      await signInWithPopup(auth, provider);
+      window.location.href = "Home.html";
+    } catch (e) {
+      document.getElementById('msgBox').innerText = friendlyError(e.code);
     }
+  }
 
-    window.handleMain = async function() {
-      const email = document.getElementById('emailInput').value.trim();
-      const pass = document.getElementById('passInput').value;
-      const msg = document.getElementById('msgBox');
-      const btn = document.getElementById('mainBtn');
+  document.getElementById('googleBtn').addEventListener('click', () => socialLogin(googleProvider));
+  document.getElementById('facebookBtn').addEventListener('click', () => socialLogin(facebookProvider));
+  document.getElementById('appleBtn').addEventListener('click', () => socialLogin(appleProvider));
 
-      if (!email || !pass) {
+  window.handleMain = async function() {
+    const email = document.getElementById('emailInput').value.trim();
+    const pass = document.getElementById('passInput').value;
+    const msg = document.getElementById('msgBox');
+    const btn = document.getElementById('mainBtn');
+
+    if (!email || !pass) { msg.innerText = "Fill everything out, blud."; return; }
+
+    btn.disabled = true;
+    btn.innerText = "Loading...";
+
+    if (isSignup) {
+      const confirm = document.getElementById('confirmInput').value;
+      if (pass !== confirm) {
+        msg.innerText = "Passwords don't match, fam.";
+        btn.disabled = false; btn.innerText = "Sign Up"; return;
+      }
+      if (pass.length < 6) {
+        msg.innerText = "Password needs 6+ chars, no cap.";
+        btn.disabled = false; btn.innerText = "Sign Up"; return;
+      }
+      try {
+        await createUserWithEmailAndPassword(auth, email, pass);
+        msg.style.color = "#2ecc71";
+        msg.innerText = "Account created! Welcome. Redirecting...";
+        setTimeout(() => { window.location.href = "Home.html"; }, 1200);
+      } catch (e) {
         msg.style.color = "#ff4d4d";
-        msg.innerText = "Fill everything out, blud.";
-        return;
+        msg.innerText = friendlyError(e.code);
+        btn.disabled = false; btn.innerText = "Sign Up";
       }
-
-      btn.disabled = true;
-      btn.innerText = "Loading...";
-
-      if (isSignup) {
-        const confirm = document.getElementById('confirmInput').value;
-        if (pass !== confirm) {
-          msg.style.color = "#ff4d4d";
-          msg.innerText = "Passwords don't match, fam.";
-          btn.disabled = false;
-          btn.innerText = "Sign Up";
-          return;
-        }
-        if (pass.length < 6) {
-          msg.style.color = "#ff4d4d";
-          msg.innerText = "Password needs 6+ chars, no cap.";
-          btn.disabled = false;
-          btn.innerText = "Sign Up";
-          return;
-        }
-
-        try {
-          await createUserWithEmailAndPassword(auth, email, pass);
-
-          try {
-            await emailjs.send("service_m8d4h8s", "template_9zq2kvd", {
-              to_name: email.split("@")[0],
-              to_email: email,
-            });
-          } catch (e) {
-            console.warn("EmailJS failed:", e);
-          }
-
-          msg.style.color = "#2ecc71";
-          msg.innerText = "Account created! Welcome email sent. Redirecting...";
-          setTimeout(() => { window.location.href = "Home.html"; }, 1500);
-
-        } catch (error) {
-          msg.style.color = "#ff4d4d";
-          msg.innerText = friendlyError(error.code);
-          btn.disabled = false;
-          btn.innerText = "Sign Up";
-        }
-
-      } else {
-        try {
-          await signInWithEmailAndPassword(auth, email, pass);
-          msg.style.color = "#2ecc71";
-          msg.innerText = "You're in. Redirecting...";
-          setTimeout(() => { window.location.href = "Home.html"; }, 1200);
-
-        } catch (error) {
-          msg.style.color = "#ff4d4d";
-          msg.innerText = friendlyError(error.code);
-          btn.disabled = false;
-          btn.innerText = "Log In";
-        }
+    } else {
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        msg.style.color = "#2ecc71";
+        msg.innerText = "You're in. Redirecting...";
+        setTimeout(() => { window.location.href = "Home.html"; }, 1000);
+      } catch (e) {
+        msg.style.color = "#ff4d4d";
+        msg.innerText = friendlyError(e.code);
+        btn.disabled = false; btn.innerText = "Log In";
       }
     }
+  };
 
-    function friendlyError(code) {
-      switch (code) {
-        case "auth/email-already-in-use": return "That email's already registered, fam.";
-        case "auth/invalid-email": return "That email looks cooked. Try again.";
-        case "auth/wrong-password": return "Wrong password, L.";
-        case "auth/user-not-found": return "No account found with that email.";
-        case "auth/invalid-credential": return "Wrong email or password, L.";
-        case "auth/too-many-requests": return "Too many attempts. Chill for a sec.";
-        default: return "Something went cooked. Try again.";
-      }
-    }
-  </script>
-
-  <footer>
-    <p>&copy; 2026 Brainrot Weekly. Built different.</p>
-  </footer>
-  
+  function friendlyError(code) {
+    const map = {
+      "auth/email-already-in-use": "That email's already registered, fam.",
+      "auth/invalid-email": "That email looks cooked. Try again.",
+      "auth/wrong-password": "Wrong password, L.",
+      "auth/user-not-found": "No account found with that email.",
+      "auth/invalid-credential": "Wrong email or password, L.",
+      "auth/too-many-requests": "Too many attempts. Chill for a sec.",
+      "auth/popup-closed-by-user": "Popup closed. Try again.",
+      "auth/account-exists-with-different-credential": "Account exists with a different login method."
+    };
+    return map[code] || "Something went cooked. Try again.";
+  }
+</script>
 </body>
 </html>

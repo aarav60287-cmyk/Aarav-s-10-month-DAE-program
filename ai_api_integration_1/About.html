@@ -4,25 +4,101 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About | Brainrot Weekly</title>
-  <link rel="stylesheet" href="./Ztyles.css">
+  <meta name="description" content="Learn about Brainrot Weekly — the site that decodes internet culture, Gen-Z slang, and viral trends every week.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="Ztyles.css">
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <header>
-    <h1>Brainrot Weekly</h1>
+<header>
+  <h1><a href="Home.html">Brainrot Weekly</a></h1>
+  <nav>
     <ul>
       <li><a href="Home.html">Home</a></li>
       <li><a href="Blog.html">Blog</a></li>
       <li><a href="Translator.html">Translator</a></li>
       <li><a href="Trending.html">Trending</a></li>
       <li><a href="Dictionary.html">Dictionary</a></li>
+      <li><a href="Login.html">Log In</a></li>
     </ul>
-  </header>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
 
-  <footer>
-    <p>&copy; 2026 Brainrot Weekly. Built different.</p>
-  </footer>
-  
+<nav class="mobile-nav" id="mobileNav">
+  <a href="Home.html">Home</a>
+  <a href="Blog.html">Blog</a>
+  <a href="Translator.html">Translator</a>
+  <a href="Trending.html">Trending</a>
+  <a href="Dictionary.html">Dictionary</a>
+  <a href="Login.html">Log In</a>
+</nav>
+
+<main>
+  <section class="welcome-box">
+    <h2>About Brainrot Weekly 🧠</h2>
+    <p style="max-width: 560px; font-size: 1rem;">We built this because getting lost in internet culture shouldn't require a PhD. Whether you're a lurker, a poster, or someone who just got called "mid" and needs to know what that means — this is your spot.</p>
+    <a href="Dictionary.html" class="btn">Explore the Dictionary →</a>
+  </section>
+
+  <div class="about-grid">
+    <div class="about-card">
+      <span class="card-emoji">📖</span>
+      <h3>The Dictionary</h3>
+      <p>We've built a glossary of 100+ slang terms — each one defined properly, with real examples and context. No watered-down definitions. Vote on your favorites or bookmark the ones you keep forgetting.</p>
+    </div>
+    <div class="about-card">
+      <span class="card-emoji">🔄</span>
+      <h3>The Translator</h3>
+      <p>Powered by AI, the Brainrot Translator turns any normal sentence into Gen-Alpha slang — or helps you decode something someone sent you. Type it in, get it back rotified. Simple.</p>
+    </div>
+    <div class="about-card">
+      <span class="card-emoji">📈</span>
+      <h3>Trending</h3>
+      <p>Every week we track what's rising and what's getting cooked. The Aura Evaluator lets you check whether a phrase is based or cringe before you post it. Know before you go.</p>
+    </div>
+    <div class="about-card">
+      <span class="card-emoji">✍️</span>
+      <h3>The Blog</h3>
+      <p>Posts about internet culture, trend deep-dives, and whatever's on our minds. We write about it so you don't have to doom scroll for three hours to figure out the lore.</p>
+    </div>
+    <div class="about-card">
+      <span class="card-emoji">💡</span>
+      <h3>Community Submissions</h3>
+      <p>Heard something new in the wild? Submit it through the Dictionary page. We review every submission and credit the people who send in real ones. Built by the community, fr fr.</p>
+    </div>
+    <div class="about-card">
+      <span class="card-emoji">🔒</span>
+      <h3>Free, Always</h3>
+      <p>No paywalls. No ads. No selling your data. Brainrot Weekly is just built for fun and for keeping up with the internet. Sign up to save your bookmarks — or don't, and just browse as a guest.</p>
+    </div>
+  </div>
+
+  <div class="team-banner">
+    <h2>Built Different 🏗️</h2>
+    <p>Brainrot Weekly is an independent project. Sid and Pichy said to put their names here, so: Sid and Pichy. You know who you are.</p>
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 Brainrot Weekly. Built different.</p>
+  <div class="footer-links-row">
+    <a href="Home.html">Home</a>
+    <a href="Blog.html">Blog</a>
+    <a href="Dictionary.html">Dictionary</a>
+  </div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+</script>
 </body>
-</html> 
+</html>

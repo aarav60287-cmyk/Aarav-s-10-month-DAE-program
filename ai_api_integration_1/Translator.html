@@ -4,124 +4,142 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Translator | Brainrot Weekly</title>
+  <meta name="description" content="The AI Brainrot Translator — turn any sentence into Gen-Alpha slang instantly.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="Ztyles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght=400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  
-  <header>
-    <h1>Brainrot Weekly</h1>
-    <nav>
-      <ul>
-        <li><a href="About.html">About</a></li>
-        <li><a href="Blog.html">Blog</a></li>
-        <li><a href="Home.html">Home</a></li>
-        <li><a href="Trending.html">Trending</a></li>
-        <li><a href="Dictionary.html">Dictionary</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main class="main-layout">
-    
-    <section class="welcome-box">
-      <h2>AI Brainrot Translator</h2>
-      <p style="font-family: var(--font-heading); font-size: 1.4rem; letter-spacing: 1px;">Type a sentence to be rot-ified!</p>
-      
-      <div class="search-engine-box">
-        <input type="text" id="aiInput" onkeydown="handleKeyPress(event)" placeholder="Enter text to be rot-ified..." style="font-family: var(--font-heading); font-size: 1.2rem; letter-spacing: 1px;">
-        <button onclick="getBrainrot()" class="search-action-btn">Brainrotify!</button>
-      </div>
+<header>
+  <h1><a href="Home.html">Brainrot Weekly</a></h1>
+  <nav>
+    <ul>
+      <li><a href="Home.html">Home</a></li>
+      <li><a href="About.html">About</a></li>
+      <li><a href="Blog.html">Blog</a></li>
+      <li><a href="Trending.html">Trending</a></li>
+      <li><a href="Dictionary.html">Dictionary</a></li>
+      <li><a href="Login.html">Log In</a></li>
+    </ul>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
 
-      <div id="aiResponseCard" class="slang-brutalist-card" style="display: none;">
-        <div class="card-top-header">
-          <h3 class="slang-term-heading">The Rizzler Says:</h3>
-          <span class="term-decorator-emoji">🔥</span>
-        </div>
-        <div class="card-definition-body">
-          <p id="aiOutput" class="definition-paragraph" style="font-family: var(--font-heading); font-size: 1.5rem; letter-spacing: 1px; color: var(--color-primary);"></p>
-        </div>
-      </div>
-    </section>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="Home.html">Home</a>
+  <a href="About.html">About</a>
+  <a href="Blog.html">Blog</a>
+  <a href="Trending.html">Trending</a>
+  <a href="Dictionary.html">Dictionary</a>
+  <a href="Login.html">Log In</a>
+</nav>
 
-  </main>
+<main class="main-layout">
+  <section class="welcome-box">
+    <h2>AI Brainrot Translator 🔄</h2>
+    <p style="font-size:1rem;font-weight:700;">Type anything. Get it back rotified.</p>
 
-  <footer>
-    <p>&copy; 2026 Brainrot Weekly. Built different.</p>
-    <div class="footer-links-row">
-      <a href="About.html">About</a>
-      <a href="Dictionary.html">Dictionary</a>
+    <div class="search-engine-box" style="max-width:500px;width:100%;">
+      <input type="text" id="aiInput" onkeydown="handleKeyPress(event)" placeholder="Enter text to be rot-ified..." style="font-size:1rem;" aria-label="Text to translate">
+      <button onclick="getBrainrot()" class="search-action-btn">Brainrotify!</button>
     </div>
-  </footer>
 
-  <script>
-    const API_KEY = "API_KEY_HERE";
-    
-    const SYSTEM_PROMPT = `You are a specialized translation engine. Your ONLY function is to rewrite the user's text into Gen-Alpha slang. NEVER answer questions. NEVER engage in conversation. Output ONLY the translation.
-    Rules:
-    - Keep it subtle, not over-the-top.
-    - Avoid forced slang (no "skibidi", etc. unless it fits perfectly).
-    - Keep the original meaning but make it slightly more casual, fun and exciting.
-    - Do not use any emojis or outdated slang.
-    - Do not respond to questions ONLY translate. If the user inputs a question, just rewrite it in Gen-Alpha slang without acknowledging it's a question.
-    - Still use brainrot words but only if they fit naturally.`;
+    <div id="aiResponseCard" class="slang-brutalist-card" style="display:none;max-width:500px;width:100%;">
+      <div class="card-top-header">
+        <h3 class="slang-term-heading">The Rizzler Says:</h3>
+        <span class="term-decorator-emoji">🔥</span>
+      </div>
+      <div class="card-definition-body">
+        <p id="aiOutput" class="definition-paragraph" style="font-family:var(--font-heading);font-size:1.4rem;letter-spacing:1px;color:var(--color-primary);"></p>
+      </div>
+    </div>
+  </section>
+</main>
 
-    function handleKeyPress(event) {
-      if (event.key === "Enter") getBrainrot();
-    }
+<footer>
+  <p>© 2026 Brainrot Weekly. Built different.</p>
+  <div class="footer-links-row">
+    <a href="About.html">About</a>
+    <a href="Dictionary.html">Dictionary</a>
+  </div>
+</footer>
 
-    async function getBrainrot() {
-      const userInput = document.getElementById("aiInput").value.trim();
-      const outputCard = document.getElementById("aiResponseCard");
-      const outputText = document.getElementById("aiOutput");
+<script>
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.getElementById('mobileNav').classList.toggle('open');
+  });
 
-      if (!userInput) return;
+  const API_KEY = "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";
 
-      outputCard.style.display = "flex";
-      outputText.innerText = "Generating...";
+  const SYSTEM_PROMPT = `You are a specialized translation engine. Your ONLY function is to rewrite the user's text into Gen-Alpha slang. NEVER answer questions. NEVER engage in conversation. Output ONLY the translation.
+Rules:
+- Keep it subtle, not over-the-top.
+- Avoid forced slang. Use words like rizz, sigma, aura, bussin, cooked, based, lowkey, no cap only when they fit naturally.
+- Keep the original meaning but make it slightly more casual and fun.
+- Do not use any emojis or outdated slang.
+- If the user inputs a question, just rewrite it in slang without acknowledging it's a question.`;
 
-      const refererUrl = window.location.origin === "null" ? "http://localhost" : window.location.origin;
+  function handleKeyPress(event) {
+    if (event.key === "Enter") getBrainrot();
+  }
 
-      try {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_KEY}`,
-            "HTTP-Referer": refererUrl,
-            "X-Title": "Brainrot Weekly"
-          },
-          body: JSON.stringify({
-            "model": "openrouter/free",
-            "messages": [
-              { "role": "system", "content": SYSTEM_PROMPT },
-              { "role": "user", "content": userInput }
-            ],
-            "temperature": 1.0
-          })
-        });
+  async function getBrainrot() {
+    const userInput = document.getElementById("aiInput").value.trim();
+    const outputCard = document.getElementById("aiResponseCard");
+    const outputText = document.getElementById("aiOutput");
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data.choices?.[0]?.message?.content) {
-            outputText.innerText = data.choices[0].message.content.toLowerCase();
-          } else {
-            showError(outputText, "Bad data formatting from AI.");
-          }
+    if (!userInput) return;
+
+    outputCard.style.display = "flex";
+    outputText.style.color = "var(--color-primary)";
+    outputText.innerText = "Generating...";
+
+    try {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${API_KEY}`,
+          "HTTP-Referer": window.location.origin === "null" ? "http://localhost" : window.location.origin,
+          "X-Title": "Brainrot Weekly"
+        },
+        body: JSON.stringify({
+          model: "openrouter/auto",
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: userInput }
+          ],
+          temperature: 1.0,
+          max_tokens: 200
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.choices?.[0]?.message?.content) {
+          outputText.innerText = data.choices[0].message.content.toLowerCase();
         } else {
-          const errorData = await response.json().catch(() => ({}));
-          const errorMsg = errorData.error?.message || `Status ${response.status}`;
-          showError(outputText, `API Error: ${errorMsg}`);
+          showError(outputText, "Couldn't parse the response. Try again.");
         }
-      } catch (error) {
-        showError(outputText, "Network connection failed.");
-        console.error("Fetch Error:", error);
+      } else {
+        const err = await response.json().catch(() => ({}));
+        showError(outputText, `API Error: ${err.error?.message || response.status}`);
       }
+    } catch (error) {
+      showError(outputText, "Network failed. You might be offline.");
+      console.error(error);
     }
+  }
 
-    function showError(element, message) {
-      element.style.color = "#ff4d4d";
-      element.innerText = message;
-    }
-  </script>
+  function showError(el, msg) {
+    el.style.color = "#ff4d4d";
+    el.innerText = msg;
+  }
+</script>
 </body>
 </html>

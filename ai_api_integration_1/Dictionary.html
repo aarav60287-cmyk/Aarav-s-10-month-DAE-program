@@ -4,217 +4,365 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dictionary | Brainrot Weekly</title>
+  <meta name="description" content="The Brainrot Dictionary — every Gen-Z and Gen-Alpha slang term defined, with examples and context. No cap.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="Ztyles.css">
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <header>
-    <h1>Brainrot Weekly</h1>
+<header>
+  <h1><a href="Home.html">Brainrot Weekly</a></h1>
+  <nav>
     <ul>
       <li><a href="Home.html">Home</a></li>
+      <li><a href="About.html">About</a></li>
       <li><a href="Blog.html">Blog</a></li>
       <li><a href="Translator.html">Translator</a></li>
       <li><a href="Trending.html">Trending</a></li>
-      <li><a href="Dictionary.html">Dictionary</a></li>
     </ul>
-  </header>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
 
-  <main class="main-layout">
-    
-    <section class="dictionary-header-block">
-      <div class="header-title-row">
-        <div class="title-group">
-          <span class="icon-book-badge">📖</span>
-          <h2 class="branding-title">BRAINROT DICTIONARY</h2>
-        </div>
-        <div class="search-engine-box">
-          <input type="text" id="searchBar" placeholder="Search current internet terms...">
-          <button id="searchBtn" class="search-action-btn">SEARCH</button>
-        </div>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="Home.html">Home</a>
+  <a href="About.html">About</a>
+  <a href="Blog.html">Blog</a>
+  <a href="Translator.html">Translator</a>
+  <a href="Trending.html">Trending</a>
+</nav>
+
+<main class="main-layout">
+  <section class="dictionary-header-block">
+    <div class="header-title-row">
+      <div class="title-group">
+        <span class="icon-book-badge">📖</span>
+        <h2 class="branding-title">BRAINROT DICTIONARY</h2>
       </div>
-      <p class="subtitle-text">Deciphering Gen Z/Alpha Internet Slang.</p>
-    </section>
-
-    <nav class="alphabet-navigation-bar">
-      <span class="jump-label">JUMP TO:</span>
-      <div class="letters-track" id="alphabetTrack"></div>
-    </nav>
-
-    <section class="dictionary-cards-grid" id="dictionaryGrid"></section>
-
-    <section class="wild-submission-banner">
-      <div class="banner-content">
-        <span class="bulb-icon">💡</span>
-        <div class="banner-texts">
-          <h4>HEARD SOMETHING NEW IN THE WILD?</h4>
-          <p>Submit slang to our translation team and let AI rot-ify it.</p>
-        </div>
+      <div class="search-engine-box">
+        <input type="text" id="searchBar" placeholder="Search terms..." aria-label="Search dictionary">
+        <button id="searchBtn" class="search-action-btn">SEARCH</button>
       </div>
-      <button class="submit-slang-action">SUBMIT NEW SLANG</button>
-    </section>
+    </div>
+    <p class="subtitle-text">Deciphering Gen Z/Alpha Internet Slang.</p>
+  </section>
 
-  </main>
+  <nav class="alphabet-navigation-bar" aria-label="Alphabetical filter">
+    <span class="jump-label">JUMP TO:</span>
+    <div class="letters-track" id="alphabetTrack"></div>
+  </nav>
 
-  <footer>
-    <p>&copy; 2026 Brainrot Weekly. Built different.</p>
-  </footer>
+  <section class="dictionary-cards-grid" id="dictionaryGrid"></section>
 
-  <script src="Words.js"></script>
-  <script>
-    let brainrotState = JSON.parse(localStorage.getItem('brainrot_state')) || {};
+  <section class="wild-submission-banner">
+    <div class="banner-content">
+      <span class="bulb-icon">💡</span>
+      <div class="banner-texts">
+        <h4>HEARD SOMETHING NEW IN THE WILD?</h4>
+        <p>Submit slang to our team — we'll review it and add the good ones.</p>
+      </div>
+    </div>
+    <button class="submit-slang-action" onclick="openSubmitModal()">SUBMIT NEW SLANG</button>
+  </section>
+</main>
 
-    WORDS.forEach(item => {
-      if (!brainrotState[item.word]) {
-        brainrotState[item.word] = {
-          votes: 0,
-          hasVoted: false,
-          isBookmarked: false
-        };
-      }
-    });
+<!-- EXPLAIN modal -->
+<div class="modal-overlay" id="explainModal" style="display:none;" onclick="closeExplainModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeExplainModal()">✕</button>
+    <div class="modal-word" id="modalWord"></div>
+    <div class="modal-body" id="modalBody">
+      <span class="modal-loading">Generating explanation...</span>
+    </div>
+  </div>
+</div>
 
-    function saveToStorage() {
-      localStorage.setItem('brainrot_state', JSON.stringify(brainrotState));
+<!-- SUBMIT SLANG modal -->
+<div class="modal-overlay" id="submitModal" style="display:none;" onclick="closeSubmitModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeSubmitModal()">✕</button>
+    <h2 style="text-align:left;font-size:1.8rem;margin-bottom:16px;">Submit Slang 💡</h2>
+    <input type="text" id="submitWord" class="post-input" placeholder="The word or phrase..." maxlength="60">
+    <input type="text" id="submitDef" class="post-input" placeholder="Define it in your own words...">
+    <input type="text" id="submitExample" class="post-input" placeholder='Example: "That fit is bussin fr"'>
+    <p id="submitMsg" style="font-weight:700;font-size:0.9rem;color:#ff4d4d;min-height:18px;font-family:var(--font-body);"></p>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="btn" onclick="submitSlang()">Submit for Review ✦</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Brainrot Weekly. Built different.</p>
+  <div class="footer-links-row">
+    <a href="About.html">About</a>
+    <a href="Home.html">Home</a>
+    <a href="Translator.html">Translator</a>
+  </div>
+</footer>
+
+<script src="Words.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore, collection, addDoc, getDocs, setDoc, getDoc, doc, serverTimestamp, increment
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCRGeBUhsZoF9Epl2xpaJ4KISfunl9lLsI",
+    authDomain: "brainrot-weekly.firebaseapp.com",
+    projectId: "brainrot-weekly",
+    storageBucket: "brainrot-weekly.firebasestorage.app",
+    messagingSenderId: "46085324988",
+    appId: "1:46085324988:web:f330daeb1db3cc6c36d0b9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Load vote counts from Firestore
+  let firestoreVotes = {};
+
+  async function loadVotes() {
+    try {
+      const snap = await getDocs(collection(db, 'votes'));
+      snap.forEach(d => { firestoreVotes[d.id] = d.data().count || 0; });
+    } catch(e) { console.warn('Votes load failed', e); }
+  }
+
+  // State: local voted/bookmarked (localStorage fallback)
+  let localState = JSON.parse(localStorage.getItem('brainrot_state') || '{}');
+
+  WORDS.forEach(item => {
+    if (!localState[item.word]) localState[item.word] = { hasVoted: false, isBookmarked: false };
+  });
+
+  function saveLocal() { localStorage.setItem('brainrot_state', JSON.stringify(localState)); }
+
+  // Expose globals for inline handlers
+  window._db = db;
+  window._firestoreVotes = firestoreVotes;
+  window._localState = localState;
+  window._saveLocal = saveLocal;
+
+  window.voteWord = async function(word) {
+    const state = localState[word];
+    const counterEl = document.getElementById('vote-count-' + word.replace(/\s/g,'_'));
+    if (!state.hasVoted) {
+      state.hasVoted = true;
+      firestoreVotes[word] = (firestoreVotes[word] || 0) + 1;
+      try {
+        await setDoc(doc(db, 'votes', word), { count: increment(1) }, { merge: true });
+      } catch(e) {}
+    } else {
+      state.hasVoted = false;
+      firestoreVotes[word] = Math.max(0, (firestoreVotes[word] || 0) - 1);
+      try {
+        await setDoc(doc(db, 'votes', word), { count: increment(-1) }, { merge: true });
+      } catch(e) {}
     }
+    saveLocal();
+    if (counterEl) counterEl.textContent = firestoreVotes[word] || 0;
+    const btn = document.getElementById('vote-btn-' + word.replace(/\s/g,'_'));
+    if (btn) btn.classList.toggle('voted', state.hasVoted);
+  };
 
-    const dictionaryGrid = document.getElementById('dictionaryGrid');
-    const searchBar = document.getElementById('searchBar');
-    const searchBtn = document.getElementById('searchBtn');
-    const alphabetTrack = document.getElementById('alphabetTrack');
-    let selectedLetter = null;
+  window.bookmarkWord = function(word) {
+    const state = localState[word];
+    state.isBookmarked = !state.isBookmarked;
+    saveLocal();
+    const btn = document.getElementById('bookmark-btn-' + word.replace(/\s/g,'_'));
+    if (btn) btn.style.background = state.isBookmarked ? 'var(--color-accent)' : 'white';
+  };
 
-    function buildAlphabetBar() {
-      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("");
-      alphabetTrack.innerHTML = "";
+  window.submitSlang = async function() {
+    const word = document.getElementById('submitWord').value.trim();
+    const def = document.getElementById('submitDef').value.trim();
+    const example = document.getElementById('submitExample').value.trim();
+    const msg = document.getElementById('submitMsg');
 
-      letters.forEach(letter => {
-        const btn = document.createElement('button');
-        btn.className = "letter-node";
-        btn.textContent = letter;
+    if (!word || !def) { msg.innerText = "Word and definition required, fr."; return; }
 
-        if (selectedLetter === letter) btn.classList.add('active');
-
-        btn.addEventListener('click', () => {
-          if (selectedLetter === letter) {
-            selectedLetter = null;
-            btn.classList.remove('active');
-          } else {
-            document.querySelectorAll('.letter-node').forEach(b => b.classList.remove('active'));
-            selectedLetter = letter;
-            btn.classList.add('active');
-          }
-          filterAndRender();
-        });
-
-        alphabetTrack.appendChild(btn);
+    try {
+      await addDoc(collection(db, 'submissions'), {
+        word, def, example,
+        status: 'pending',
+        submittedAt: serverTimestamp()
       });
+      msg.style.color = '#2ecc71';
+      msg.innerText = "Submitted! We'll review it soon. ✦";
+      document.getElementById('submitWord').value = '';
+      document.getElementById('submitDef').value = '';
+      document.getElementById('submitExample').value = '';
+    } catch(e) {
+      msg.style.color = '#ff4d4d';
+      msg.innerText = "Submission failed. Try again.";
     }
+  };
 
-    function renderCards(wordsList) {
-      dictionaryGrid.innerHTML = "";
+  // Load votes then render
+  loadVotes().then(() => { renderCards(WORDS); });
+</script>
 
-      if (wordsList.length === 0) {
-        dictionaryGrid.innerHTML = '<div class="fallback-empty-state">No brainrot matching that query found. You are clean. 💀</div>';
-        return;
-      }
+<script>
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.getElementById('mobileNav').classList.toggle('open');
+  });
 
-      wordsList.forEach(item => {
-        const card = document.createElement('article');
-        card.className = "slang-brutalist-card";
+  const dictionaryGrid = document.getElementById('dictionaryGrid');
+  const searchBar = document.getElementById('searchBar');
+  const alphabetTrack = document.getElementById('alphabetTrack');
+  let selectedLetter = null;
 
-        const state = brainrotState[item.word];
-        const votedClass = state.hasVoted ? 'voted' : '';
-        const bookmarkedStyle = state.isBookmarked ? 'background: var(--color-accent);' : '';
-
-        card.innerHTML = `
-          <div class="card-top-header">
-            <h3 class="slang-term-heading">${item.word.toUpperCase()}</h3>
-            <span class="term-decorator-emoji">${item.emoji}</span>
-          </div>
-          <div class="card-definition-body">
-            <p class="definition-paragraph">${item.def}</p>
-            <p class="example-paragraph">"${item.example}"</p>
-          </div>
-          <div class="card-action-footer">
-            <div class="left-utility-cluster">
-              <button class="pill-metric-btn vote-btn ${votedClass}" data-word="${item.word}">
-                <span class="icon-thumb">👍</span>
-                <span class="counter-val">${state.votes}</span>
-              </button>
-              <button class="square-bookmark-btn bookmark-btn" data-word="${item.word}" style="${bookmarkedStyle}">🔖</button>
-            </div>
-            <button class="explain-forward-btn">EXPLAIN &rarr;</button>
-          </div>
-        `;
-
-        const voteBtn = card.querySelector('.vote-btn');
-        voteBtn.addEventListener('click', () => {
-          const word = voteBtn.getAttribute('data-word');
-          const counter = voteBtn.querySelector('.counter-val');
-          
-          if (!brainrotState[word].hasVoted) {
-            brainrotState[word].votes += 1;
-            brainrotState[word].hasVoted = true;
-            voteBtn.classList.add('voted');
-          } else {
-            brainrotState[word].votes -= 1;
-            brainrotState[word].hasVoted = false;
-            voteBtn.classList.remove('voted');
-          }
-          
-          counter.textContent = brainrotState[word].votes;
-          saveToStorage();
-        });
-
-        const bookmarkBtn = card.querySelector('.bookmark-btn');
-        bookmarkBtn.addEventListener('click', () => {
-          const word = bookmarkBtn.getAttribute('data-word');
-          
-          if (!brainrotState[word].isBookmarked) {
-            brainrotState[word].isBookmarked = true;
-            bookmarkBtn.style.background = "var(--color-accent)";
-          } else {
-            brainrotState[word].isBookmarked = false;
-            bookmarkBtn.style.background = "white";
-          }
-          
-          saveToStorage();
-        });
-
-        dictionaryGrid.appendChild(card);
-      });
-    }
-
-    function filterAndRender() {
-      const query = searchBar.value.toLowerCase().trim();
-
-      const filtered = WORDS.filter(item => {
-        const firstChar = item.word.charAt(0).toUpperCase();
-        let matchesLetter = true;
-
-        if (selectedLetter) {
-          if (selectedLetter === "#") {
-            matchesLetter = !/[A-Z]/.test(firstChar);
-          } else {
-            matchesLetter = (firstChar === selectedLetter);
-          }
+  function buildAlphabetBar() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("");
+    alphabetTrack.innerHTML = "";
+    letters.forEach(letter => {
+      const btn = document.createElement('button');
+      btn.className = "letter-node";
+      btn.textContent = letter;
+      if (selectedLetter === letter) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        if (selectedLetter === letter) {
+          selectedLetter = null;
+          btn.classList.remove('active');
+        } else {
+          document.querySelectorAll('.letter-node').forEach(b => b.classList.remove('active'));
+          selectedLetter = letter;
+          btn.classList.add('active');
         }
-
-        const matchesQuery = item.word.toLowerCase().includes(query) ||
-                             item.def.toLowerCase().includes(query);
-
-        return matchesLetter && matchesQuery;
+        filterAndRender();
       });
+      alphabetTrack.appendChild(btn);
+    });
+  }
 
-      renderCards(filtered);
+  function renderCards(wordsList) {
+    dictionaryGrid.innerHTML = "";
+    if (wordsList.length === 0) {
+      dictionaryGrid.innerHTML = '<div class="fallback-empty-state">No brainrot matching that query. You are clean. 💀</div>';
+      return;
     }
 
-    searchBar.addEventListener('input', filterAndRender);
-    searchBtn.addEventListener('click', filterAndRender);
+    wordsList.forEach(item => {
+      const safeId = item.word.replace(/\s/g,'_');
+      const votes = (window._firestoreVotes && window._firestoreVotes[item.word]) || 0;
+      const state = (window._localState && window._localState[item.word]) || { hasVoted: false, isBookmarked: false };
 
-    buildAlphabetBar();
-    renderCards(WORDS);
-  </script>
+      const card = document.createElement('article');
+      card.className = "slang-brutalist-card";
+      card.innerHTML = `
+        <div class="card-top-header">
+          <h3 class="slang-term-heading">${item.word.toUpperCase()}</h3>
+          <span class="term-decorator-emoji">${item.emoji}</span>
+        </div>
+        <div class="card-definition-body">
+          <p class="definition-paragraph">${item.def}</p>
+          <p class="example-paragraph">"${item.example}"</p>
+        </div>
+        <div class="card-action-footer">
+          <div class="left-utility-cluster">
+            <button class="pill-metric-btn ${state.hasVoted ? 'voted' : ''}" id="vote-btn-${safeId}" onclick="voteWord('${item.word}')">
+              <span>👍</span>
+              <span class="counter-val" id="vote-count-${safeId}">${votes}</span>
+            </button>
+            <button class="square-bookmark-btn" id="bookmark-btn-${safeId}" style="${state.isBookmarked ? 'background:var(--color-accent)' : ''}" onclick="bookmarkWord('${item.word}')">🔖</button>
+          </div>
+          <button class="explain-forward-btn" onclick="openExplainModal('${item.word.replace(/'/g,"\\'")}','${item.def.replace(/'/g,"\\'").substring(0,80)}')">EXPLAIN →</button>
+        </div>
+      `;
+      dictionaryGrid.appendChild(card);
+    });
+  }
+
+  function filterAndRender() {
+    const query = searchBar.value.toLowerCase().trim();
+    const filtered = WORDS.filter(item => {
+      const firstChar = item.word.charAt(0).toUpperCase();
+      let matchesLetter = true;
+      if (selectedLetter) {
+        matchesLetter = selectedLetter === "#" ? !/[A-Z]/.test(firstChar) : (firstChar === selectedLetter);
+      }
+      return matchesLetter && (item.word.toLowerCase().includes(query) || item.def.toLowerCase().includes(query));
+    });
+    renderCards(filtered);
+  }
+
+  searchBar.addEventListener('input', filterAndRender);
+  document.getElementById('searchBtn').addEventListener('click', filterAndRender);
+
+  // EXPLAIN modal
+  window.openExplainModal = async function(word, shortDef) {
+    document.getElementById('explainModal').style.display = 'flex';
+    document.getElementById('modalWord').textContent = word;
+    document.getElementById('modalBody').innerHTML = '<span class="modal-loading">Generating explanation...</span>';
+
+    try {
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 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'
+        },
+        body: JSON.stringify({
+          model: 'openrouter/auto',
+          messages: [
+            {
+              role: 'system',
+              content: 'You explain internet slang terms clearly and concisely. Give a 2-3 sentence explanation covering: what it means, where it came from (if known), and how it is actually used. Be direct. No emojis. No bullet points. Plain paragraph.'
+            },
+            {
+              role: 'user',
+              content: `Explain the slang term "${word}". It means: ${shortDef}`
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 150
+        })
+      });
+      const data = await res.json();
+      const text = data.choices?.[0]?.message?.content || 'Could not generate explanation.';
+      document.getElementById('modalBody').textContent = text;
+    } catch(e) {
+      document.getElementById('modalBody').textContent = 'Failed to load explanation. Check your connection.';
+    }
+  };
+
+  window.closeExplainModal = function(e) {
+    if (!e || e.target.classList.contains('modal-overlay')) {
+      document.getElementById('explainModal').style.display = 'none';
+    }
+  };
+
+  window.openSubmitModal = function() {
+    document.getElementById('submitModal').style.display = 'flex';
+    document.getElementById('submitMsg').innerText = '';
+  };
+
+  window.closeSubmitModal = function(e) {
+    if (!e || e.target.classList.contains('modal-overlay')) {
+      document.getElementById('submitModal').style.display = 'none';
+    }
+  };
+
+  // Close modals on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('explainModal').style.display = 'none';
+      document.getElementById('submitModal').style.display = 'none';
+    }
+  });
+
+  buildAlphabetBar();
+  // Initial render (votes load async, renderCards called again after)
+  renderCards(WORDS);
+</script>
 </body>
 </html>

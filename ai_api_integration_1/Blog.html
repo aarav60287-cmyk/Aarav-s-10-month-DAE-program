@@ -4,108 +4,234 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog | Brainrot Weekly</title>
-  <link rel="stylesheet" href="./Ztyles.css">
+  <meta name="description" content="Deep dives into internet culture, trend breakdowns, and weekly recaps from Brainrot Weekly.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="Ztyles.css">
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    .blog-post-card {
+      background: var(--color-card-bg);
+      border: 3px solid var(--color-text);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      box-shadow: var(--shadow-base);
+      margin-bottom: 20px;
+      text-align: left;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .blog-post-card:hover {
+      transform: translate(-2px,-2px);
+      box-shadow: 10px 10px 0 var(--color-primary);
+    }
+    .blog-post-meta {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: var(--color-secondary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-family: var(--font-body);
+    }
+    .blog-post-title {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      color: var(--color-text);
+      margin-bottom: 10px;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .blog-post-body {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: #444;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+    .admin-panel {
+      border: 3px dashed var(--color-primary);
+      border-radius: var(--border-radius);
+      background: #fff5f5;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .admin-panel h3 {
+      border-bottom: 3px dashed var(--color-primary);
+      color: var(--color-primary);
+      margin-bottom: 16px;
+    }
+    .loading-state {
+      text-align: center;
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: #ccc;
+      padding: 40px;
+      animation: pulse 1s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+    textarea.post-input { resize: vertical; min-height: 100px; }
+  </style>
 </head>
 <body>
 
-  <header>
-    <h1>Brainrot Weekly</h1>
-    <nav>
-      <ul>
-        <li><a href="About.html">About</a></li>
-        <li><a href="Home.html">Home</a></li>
-        <li><a href="Translator.html">Translator</a></li>
-        <li><a href="Trending.html">Trending</a></li>
-        <li><a href="Dictionary.html">Dictionary</a></li>
+<header>
+  <h1><a href="Home.html">Brainrot Weekly</a></h1>
+  <nav>
+    <ul>
+      <li><a href="Home.html">Home</a></li>
+      <li><a href="About.html">About</a></li>
+      <li><a href="Translator.html">Translator</a></li>
+      <li><a href="Trending.html">Trending</a></li>
+      <li><a href="Dictionary.html">Dictionary</a></li>
+      <li><a href="Login.html">Log In</a></li>
+    </ul>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
 
-      </ul>
-    </nav>
-  </header>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="Home.html">Home</a>
+  <a href="About.html">About</a>
+  <a href="Translator.html">Translator</a>
+  <a href="Trending.html">Trending</a>
+  <a href="Dictionary.html">Dictionary</a>
+  <a href="Login.html">Log In</a>
+</nav>
 
-  <section class="welcome-box">
-    <h2>Blogs</h2>
+<section class="welcome-box">
+  <h2>The Blog ✍️</h2>
+  <p style="max-width:540px;">Deep dives, trend breakdowns, and weekly recaps. The lore, the origins, the whole arc.</p>
+</section>
 
-    <div class="feature-card" style="max-width: 600px; text-align: left;">
-      <h3>Drop a New Post</h3>
-      <input type="text" id="postTitle" class="post-input" placeholder="Post Title...">
-      <textarea id="postContent" class="post-input" rows="4" placeholder="Start typing..."></textarea>
-      <div style="text-align: center;">
-        <button onclick="addPost()" class="btn">Publish Post</button>
-      </div>
+<div style="max-width: 680px; margin: 0 auto; padding: 0 24px 40px;">
+
+  <!-- Admin panel: only visible to logged-in user -->
+  <div class="admin-panel" id="adminPanel" style="display:none;">
+    <h3>🔐 Drop a New Post</h3>
+    <input type="text" id="postTitle" class="post-input" placeholder="Post title...">
+    <textarea id="postContent" class="post-input" rows="5" placeholder="Start writing..."></textarea>
+    <div style="text-align:center;">
+      <button onclick="addPost()" class="btn">Publish Post</button>
     </div>
+  </div>
 
-    <div id="blogFeed" style="width: 100%; max-width: 600px; margin-top: 20px;">
-    </div>
-  </section>
+  <div id="blogFeed"><div class="loading-state">Loading posts...</div></div>
+</div>
 
-  <script>
-    const STORAGE_KEY = "brainrot_blog_posts";
+<footer>
+  <p>© 2026 Brainrot Weekly. Built different.</p>
+  <div class="footer-links-row">
+    <a href="Home.html">Home</a>
+    <a href="About.html">About</a>
+    <a href="Dictionary.html">Dictionary</a>
+  </div>
+</footer>
 
-    const defaultPosts = [
-      {
-        title: "AURA CHECK 2026",
-        content: "If you're still using 2024 slang, your aura is officially in the negatives.",
-        date: "April 15, 2026"
-      }
-    ];
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    function loadPosts() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : defaultPosts;
+  const firebaseConfig = {
+    apiKey: "AIzaSyCRGeBUhsZoF9Epl2xpaJ4KISfunl9lLsI",
+    authDomain: "brainrot-weekly.firebaseapp.com",
+    projectId: "brainrot-weekly",
+    storageBucket: "brainrot-weekly.firebasestorage.app",
+    messagingSenderId: "46085324988",
+    appId: "1:46085324988:web:f330daeb1db3cc6c36d0b9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const ADMIN_UID = "WWtcyGNeCPfp2lUJKdMxFt6OVIx1";
+
+  let currentUserUid = null;
+
+  onAuthStateChanged(auth, (user) => {
+    currentUserUid = user ? user.uid : null;
+    if (user && user.uid === ADMIN_UID) {
+      document.getElementById('adminPanel').style.display = 'block';
     }
+  });
 
-    function renderPosts() {
-      const feed = document.getElementById("blogFeed");
-      const posts = loadPosts();
-      feed.innerHTML = "";
+  async function loadPosts() {
+    const feed = document.getElementById('blogFeed');
+    try {
+      const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
 
-      posts.slice().reverse().forEach((post, index) => {
-        const realIndex = posts.length - 1 - index;
+      if (snap.empty) {
+        feed.innerHTML = `<div style="text-align:center;font-family:var(--font-heading);font-size:1.6rem;color:#ccc;padding:40px;">No posts yet. First drop incoming. 👀</div>`;
+        return;
+      }
+
+      feed.innerHTML = '';
+      snap.forEach(docSnap => {
+        const p = docSnap.data();
+        const date = p.createdAt ? new Date(p.createdAt.seconds * 1000).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) : 'Just now';
+        const isAdmin = currentUserUid === ADMIN_UID;
 
         feed.innerHTML += `
-          <div class="feature-card" style="margin-bottom: 25px; text-align: left;">
-            <h3 style="border-bottom: none;">${post.title}</h3>
-            <small style="font-weight: 900; color: var(--color-secondary);">${post.date}</small>
-            <p style="margin-top:10px; color: var(--color-text);">${post.content}</p>
-            <button class="delete-btn" onclick="deletePost(${realIndex})">Delete</button>
+          <div class="blog-post-card">
+            <div class="blog-post-meta">${date}</div>
+            <div class="blog-post-title">${p.title}</div>
+            <div class="blog-post-body">${p.content}</div>
+            ${isAdmin ? `<button class="delete-btn" onclick="deletePost('${docSnap.id}')">Delete</button>` : ''}
           </div>
         `;
       });
+    } catch (e) {
+      feed.innerHTML = `<div style="text-align:center;font-family:var(--font-heading);font-size:1.4rem;color:var(--color-primary);padding:40px;">Couldn't load posts. Check back later.</div>`;
+      console.error(e);
     }
+  }
 
-    function addPost() {
-      const tInput = document.getElementById("postTitle");
-      const cInput = document.getElementById("postContent");
+  window.addPost = async function() {
+    const title = document.getElementById('postTitle').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    if (!title || !content) return alert("Fill it out, blud.");
 
-      if (!tInput.value || !cInput.value) return alert("Fill it out, blud.");
-
-      const posts = loadPosts();
-      posts.push({
-        title: tInput.value.toUpperCase(),
-        content: cInput.value,
-        date: new Date().toLocaleDateString()
+    try {
+      await addDoc(collection(db, 'posts'), {
+        title: title.toUpperCase(),
+        content,
+        createdAt: serverTimestamp(),
+        authorUid: currentUserUid
       });
-
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-      tInput.value = "";
-      cInput.value = "";
-      renderPosts();
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postContent').value = '';
+      loadPosts();
+    } catch (e) {
+      alert("Post failed. Try again.");
+      console.error(e);
     }
+  };
 
-    function deletePost(index) {
-      const posts = loadPosts();
-      posts.splice(index, 1);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-      renderPosts();
+  window.deletePost = async function(id) {
+    if (!confirm("Delete this post?")) return;
+    try {
+      await deleteDoc(doc(db, 'posts', id));
+      loadPosts();
+    } catch (e) {
+      alert("Delete failed.");
     }
+  };
 
-    renderPosts();
-  </script>
-  
-  <footer>
-    <p>&copy; 2026 Brainrot Weekly. Built different.</p>
-  </footer>
+  loadPosts();
+</script>
 
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+</script>
 </body>
 </html>
